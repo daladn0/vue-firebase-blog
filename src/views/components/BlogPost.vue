@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-lg mx-auto">
+  <div class="max-w-full mx-auto">
     <div
       class="bg-white shadow-md border border-gray-200 rounded-lg max-w-2xl mb-5"
     >
