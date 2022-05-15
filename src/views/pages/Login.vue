@@ -18,10 +18,10 @@
           "
           type="text"
         />
-        <span class="block mt-3 text-red-500 text-xs font-semibold">
+        <span v-if="false" class="block mt-3 text-red-500 text-xs font-semibold">
           Email is required!
         </span>
-        <span class="block mt-3 text-red-500 text-xs font-semibold">
+        <span v-if="false" class="block mt-3 text-red-500 text-xs font-semibold">
           Invalid emails is provided!
         </span>
       </div>
@@ -43,11 +43,11 @@
           "
           type="password"
         />
-        <span class="block mt-3 text-red-500 text-xs font-semibold">
+        <span v-if="false" class="block mt-3 text-red-500 text-xs font-semibold">
           Password is required!
         </span>
 
-        <span class="block mt-3 text-red-500 text-xs font-semibold">
+        <span v-if="false" class="block mt-3 text-red-500 text-xs font-semibold">
           Password shouldn't be shorter than 6 chars!
         </span>
       </div>
