@@ -1,15 +1,14 @@
 import store from '@/store'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-// import { setDoc, doc, getFirestore } from "firebase/firestore";
 import router from '@/router'
 
 onAuthStateChanged(getAuth(), (profile) => {
   if (profile) {
-    console.log(profile)
     const user = {
         email: profile.email,
         displayName: profile.displayName,
-        uid: profile.uid
+        uid: profile.uid,
+        photoURL: profile.photoURL
     }
     store.commit('auth/setUser', user)
     router.push({name: 'home'})

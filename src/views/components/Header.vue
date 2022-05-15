@@ -11,7 +11,9 @@
       h-11
     "
   >
-    <router-link to="/" class="text-lg text-gray-700 font-bold hidden md:flex">Daladn0's blog</router-link>
+    <router-link to="/" class="text-lg text-gray-700 font-bold hidden md:flex"
+      >Daladn0's blog</router-link
+    >
 
     <div>
       <div v-if="!isLoggedIn" class="flex flex-row-reverse">
@@ -34,17 +36,29 @@
       </div>
 
       <div v-else class="relative">
-        <button @click="showDropdown = !showDropdown" class="select-none cursor-pointer">
-          {{ user.uid }}
-        </button>
+        <div class="flex">
+          <button
+            @click="showDropdown = !showDropdown"
+            class="select-none cursor-pointer"
+          >
+            {{ user.displayName }}
+          </button>
+          <div class="w-6 h-6 rounded-full overflow-hidden ml-2">
+            <img
+              class="w-full h-full object-cover"
+              :src="user.photoURL"
+              :alt="user.displayName"
+            />
+          </div>
+        </div>
         <Dropdown :user="user" v-if="showDropdown" />
       </div>
     </div>
   </header>
 </template>
 <script>
-import { mapState } from 'vuex'
-import Dropdown from '@/views/components/UI/Dropdown.vue'
+import { mapState } from "vuex";
+import Dropdown from "@/views/components/UI/Dropdown.vue";
 export default {
   name: "HeaderComponent",
   components: {
@@ -52,11 +66,11 @@ export default {
   },
   data() {
     return {
-      showDropdown: false
-    }
+      showDropdown: false,
+    };
   },
   computed: {
-    ...mapState('auth', ['user', 'isLoggedIn'])
+    ...mapState("auth", ["user", "isLoggedIn"]),
   }
 };
 </script>

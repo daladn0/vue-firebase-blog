@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth'
 
 export default {
     namespaced: true,
@@ -20,12 +20,27 @@ export default {
     actions: {
         async login(ctx, { email, password }) {
             const auth = getAuth()
-            console.log(email, password)
-            const userCredential = await signInWithEmailAndPassword(auth, email, password)
-            console.log(userCredential)
+            await signInWithEmailAndPassword(auth, email, password)
         },
         async logout() {
             await signOut(getAuth())
+        },
+        async signup({commit}, { email, password, name }) {
+            const auth = getAuth()
+            await createUserWithEmailAndPassword(auth, email, password)
+            await updateProfile(getAuth().currentUser, {
+                displayName: name,
+                photoURL: 'https://i1.sndcdn.com/artworks-000143494954-ebaw9g-t500x500.jpg'
+            })
+
+            const user = auth.currentUser
+
+            commit('setUser', {
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName,
+                photoURL: user.photoURL
+            })
         }
     },
 }

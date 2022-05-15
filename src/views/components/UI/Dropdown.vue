@@ -33,14 +33,14 @@
     >
       <img
         class="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9"
-        src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8d29tYW4lMjBibHVlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=face&w=500&q=200"
-        alt="jane avatar"
+        :src="user.photoURL"
+        :alt="user.displayName"
       />
       <div class="mx-1 max-w-80%">
         <h1 class="text-sm font-semibold text-gray-700 dark:text-gray-200 truncate">
-          {{user.uid}}
+          {{user.displayName}}
         </h1>
-        <p class="text-sm text-gray-500 dark:text-gray-400">
+        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
           {{user.email}}
         </p>
       </div>
