@@ -1,13 +1,36 @@
 <template>
   <header
-    class=" flex items-center justify-between w-full h-14 px-4 bg-blue-700 text-white"
+    class="
+      w-screen
+      flex flex-row
+      items-center
+      p-1
+      px-8
+      justify-between
+      bg-white
+      shadow-xs
+    "
   >
-    <div>
-      <router-link to="/" class="font-semibold text-lg px-4 py-2">Blog</router-link>
-    </div>
-    <div>
-      <router-link to="/login"  class="px-4 py-0.5 border-2 border-white rounded-3xl font-semibold transitiona-all duration-200 hover:text-blue-700 hover:bg-white">
-        Log in
+    <!-- Logo -->
+    <div class="text-lg text-gray-700 font-bold hidden md:flex">Daladn0's blog</div>
+
+    <!-- Login button -->
+    <div class="flex flex-row-reverse">
+      <router-link
+        to="/login"
+        class="
+          relative
+          bg-blue-500
+          text-white
+          px-4
+          py-1
+          rounded
+          text-lg
+          font-bold
+          overflow-visible
+        "
+      >
+        Login
       </router-link>
     </div>
   </header>
@@ -17,7 +40,7 @@ import { mapActions } from "vuex";
 export default {
   name: "HeaderComponent",
   methods: {
-    ...mapActions('auth', ['login'])
-  }
+    ...mapActions("auth", ["login"]),
+  },
 };
 </script>

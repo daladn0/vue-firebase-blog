@@ -1,11 +1,17 @@
 <template>
   <div class="home">
-    Home
+    <div class="flex justify-center">
+      <BlogPost/>
+    </div>
   </div>
 </template>
 
 <script>
+import BlogPost from '@/views/components/BlogPost.vue'
 export default {
-  name: 'HomeView',
-}
+  name: "HomeView",
+  components: {
+    BlogPost
+  }
+};
 </script>
