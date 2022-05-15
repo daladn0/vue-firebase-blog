@@ -16,7 +16,8 @@
     >
 
     <div>
-      <div v-if="!isLoggedIn" class="flex flex-row-reverse">
+      <SpinnerLoading v-if="isDataLoading"/>
+      <div v-else-if="!isLoggedIn" class="flex flex-row-reverse">
         <router-link
           to="/login"
           class="
@@ -34,7 +35,6 @@
           Login
         </router-link>
       </div>
-
       <div v-else class="relative">
         <div class="flex">
           <button
@@ -70,7 +70,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("auth", ["user", "isLoggedIn"]),
+    ...mapState("auth", ["user", "isLoggedIn", "isDataLoading"]),
   }
 };
 </script>

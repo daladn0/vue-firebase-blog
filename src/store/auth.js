@@ -4,7 +4,8 @@ export default {
     namespaced: true,
     state: {
         user: {},
-        isLoggedIn: false
+        isLoggedIn: false,
+        isDataLoading: true,
     },
     mutations: {
         setUser(state, user) {
@@ -15,17 +16,25 @@ export default {
                 state.user = {}
                 state.isLoggedIn = false
             }
+        },
+        setIsDataLoading(state, payload) {
+            state.isDataLoading = payload
         }
     },
     actions: {
-        async login(ctx, { email, password }) {
+        async login({commit}, { email, password }) {
+            commit('setIsDataLoading', true)
             const auth = getAuth()
             await signInWithEmailAndPassword(auth, email, password)
+            commit('setIsDataLoading', false)
         },
-        async logout() {
+        async logout({commit}) {
+            commit('setIsDataLoading', true)
             await signOut(getAuth())
+            commit('setIsDataLoading', false)
         },
         async signup({commit}, { email, password, name }) {
+            commit('setIsDataLoading', true)
             const auth = getAuth()
             await createUserWithEmailAndPassword(auth, email, password)
             await updateProfile(getAuth().currentUser, {
@@ -41,6 +50,7 @@ export default {
                 displayName: user.displayName,
                 photoURL: user.photoURL
             })
+            commit('setIsDataLoading', false)
         }
     },
 }

@@ -3,6 +3,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import router from '@/router'
 
 onAuthStateChanged(getAuth(), (profile) => {
+  store.commit('auth/setIsDataLoading', true)
   if (profile) {
     const user = {
         email: profile.email,
@@ -15,4 +16,5 @@ onAuthStateChanged(getAuth(), (profile) => {
   } else {
     store.commit('auth/setUser', null)
   }
+  store.commit('auth/setIsDataLoading', false)
 });
