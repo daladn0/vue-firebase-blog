@@ -5,6 +5,8 @@ import store from './store'
 import './assets/tailwind.css'
 // eslint-disable-next-line
 import firebase from '@/store/firebase'
+// eslint-disable-next-line
+import './auth'
 
 createApp(App)
     .use(store)

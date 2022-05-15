@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-lg mx-auto">
     <div
-      class="bg-white shadow-md border border-gray-200 rounded-lg max-w-sm mb-5"
+      class="bg-white shadow-md border border-gray-200 rounded-lg max-w-2xl mb-5"
     >
       <a href="#">
         <img

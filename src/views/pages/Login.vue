@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen flex flex-col items-center justify-center">
     <h1 class="font-bold text-2xl">Login</h1>
-    <form class="flex flex-col bg-white rounded shadow-lg p-12 mt-12" action="">
+    <form class="flex flex-col bg-white rounded shadow-lg p-12 mt-12" @submit.prevent="onSubmit">
       <div>
         <label class="font-semibold text-xs" for="usernameField">Email</label>
         <input
@@ -17,12 +17,13 @@
             focus:outline-none focus:ring-2
           "
           type="text"
+          v-model="email"
         />
-        <span v-if="false" class="block mt-3 text-red-500 text-xs font-semibold">
+        <span v-if="v$.email.required.$invalid && v$.email.$dirty" class="block mt-3 text-red-500 text-xs font-semibold">
           Email is required!
         </span>
-        <span v-if="false" class="block mt-3 text-red-500 text-xs font-semibold">
-          Invalid emails is provided!
+        <span v-else-if="v$.email.email.$invalid && v$.email.$dirty" class="block mt-3 text-red-500 text-xs font-semibold">
+          Email is not valid!
         </span>
       </div>
       <div>
@@ -42,13 +43,15 @@
             focus:outline-none focus:ring-2
           "
           type="password"
+          v-model="password"
         />
-        <span v-if="false" class="block mt-3 text-red-500 text-xs font-semibold">
+
+        <span v-if="v$.password.required.$invalid && v$.password.$dirty" class="block mt-3 text-red-500 text-xs font-semibold">
           Password is required!
         </span>
 
-        <span v-if="false" class="block mt-3 text-red-500 text-xs font-semibold">
-          Password shouldn't be shorter than 6 chars!
+        <span v-else-if="v$.password.minLength.$invalid && v$.password.$dirty" class="block mt-3 text-red-500 text-xs font-semibold">
+          Password shouldn't be shorter than {{v$.password.minLength.$params.min}} chars!
         </span>
       </div>
       <button
@@ -66,6 +69,7 @@
           text-sm text-blue-100
           hover:bg-blue-700
         "
+        type="submit"
       >
         Login
       </button>
@@ -74,13 +78,49 @@
           >Forgot Password</a
         >
         <span class="mx-2 text-gray-300">/</span>
-        <a class="text-blue-400 hover:text-blue-500" href="#">Sign Up</a>
+        <router-link class="text-blue-400 hover:text-blue-500" to="/signup">Sign Up</router-link>
       </div>
     </form>
   </div>
 </template>
+
 <script>
+import { mapActions } from 'vuex'
+import useVuelidate from '@vuelidate/core'
+import { required, email, minLength } from '@vuelidate/validators'
 export default {
   name: "LoginPage",
+  setup() {
+    return { v$: useVuelidate() }
+  },
+  data() {
+    return {
+      email: '',
+      password: '',
+    }
+  },
+  validations() {
+    return {
+      email: { required, email },
+      password: { required, minLength: minLength(6) }
+    }
+  },
+  methods: {
+    ...mapActions('auth', ['login']),
+    async onSubmit() {
+      const isFormValid = await this.v$.$validate()
+
+      if ( !isFormValid ) {
+        this.v$.$touch()
+        return 
+      }
+
+      // Form is valid
+      this.login({
+        email: this.email,
+        password: this.password
+      })
+    }
+  }
 };
 </script>

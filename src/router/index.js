@@ -17,6 +17,14 @@ const routes = [
     meta: {
       layout: 'empty'
     }
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: () => import('@/views/pages/Signup.vue'),
+    meta: {
+      layout: 'empty'
+    }
   }
 ]
 

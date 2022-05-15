@@ -8,8 +8,13 @@ export default {
     },
     mutations: {
         setUser(state, user) {
-            state.user = user
-            state.isLoggedIn = true
+            if(user) {
+                state.user = user
+                state.isLoggedIn = true
+            } else {
+                state.user = {}
+                state.isLoggedIn = false
+            }
         }
     },
     actions: {

@@ -12,7 +12,7 @@
     "
   >
     <!-- Logo -->
-    <div class="text-lg text-gray-700 font-bold hidden md:flex">Daladn0's blog</div>
+    <router-link to="/" class="text-lg text-gray-700 font-bold hidden md:flex">Daladn0's blog</router-link>
 
     <!-- Login button -->
     <div class="flex flex-row-reverse">
