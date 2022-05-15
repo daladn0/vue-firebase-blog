@@ -126,7 +126,8 @@
         "
         type="submit"
       >
-        Login
+        <SpinnerLoading v-if="isLoading" />
+        <span v-else >Login</span>
       </button>
       <div class="flex mt-6 justify-center text-xs">
         <a class="text-blue-400 hover:text-blue-500" href="#"
@@ -136,13 +137,16 @@
         <router-link class="text-blue-400 hover:text-blue-500" to="/login">Login</router-link>
       </div>
     </form>
+    <p v-if="errorMessage" class="mt-4 text-red-600 text-semibold text-lg">{{errorMessage}}</p>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import useVuelidate from '@vuelidate/core'
 import { required, email, minLength, sameAs } from '@vuelidate/validators'
+import useVuelidate from '@vuelidate/core'
+import errors from '@/constants/errors';
+
 export default {
   name: "LoginPage",
   setup() {
@@ -154,6 +158,8 @@ export default {
       email: '',
       password: '',
       password_repeat: '',
+      isLoading: false,
+      errorMessage: null,
     }
   },
   validations() {
@@ -174,11 +180,23 @@ export default {
         return 
       }
 
-      this.signup({
+      this.isLoading = true
+      const error = await this.signup({
         email: this.email,
         password: this.password,
         name: this.name
       })
+
+      if ( error && error.code ) {
+        this.errorMessage = errors[error.code] || 'Something went wrong'
+        this.name = ''
+        this.email = ''
+        this.password = ''
+        this.password_repeat = ''
+        this.v$.$reset()
+      }
+
+      this.isLoading = false
     }
   }
 };
