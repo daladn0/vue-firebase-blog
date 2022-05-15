@@ -1,16 +1,22 @@
 <template>
-  <Header/>
-  <div class="mx-auto container">
+  <component :is="layout">
     <router-view/>
-  </div>
+  </component>
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
+import MainLayout from "./views/layouts/MainLayout.vue"
+import EmptyLayout from "./views/layouts/EmptyLayout.vue"
 export default {
   name: 'App',
   components: {
-    Header
+    MainLayout,
+    EmptyLayout
+  },
+  computed: {
+    layout() {
+      return (this.$route.meta.layout || 'empty') + '-layout' 
+    }
   }
 }
 </script>
