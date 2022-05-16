@@ -1,4 +1,5 @@
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth'
+import { getFirestore, getDoc, setDoc, doc } from 'firebase/firestore'
 
 export default {
     namespaced: true,
@@ -54,17 +55,33 @@ export default {
                 })
 
                 const user = auth.currentUser
-
-                commit('setUser', {
+                const db = getFirestore()
+                const newUser = {
                     uid: user.uid,
                     email: user.email,
                     displayName: user.displayName,
                     photoURL: user.photoURL
-                })
+                }
+
+                await setDoc(doc(db, 'users', user.uid), newUser)
+
+                commit('setUser', newUser)
             } catch(e) {
                 return e
             } finally {
                 commit('setIsDataLoading', false)
+            }
+        },
+        async fetchUserByID(ctx, uid) {
+            try {
+                const db = getFirestore()
+                const docRef = doc(db, "users", uid);
+                const snapshot = await getDoc(docRef);
+                if ( snapshot.exists() ) {
+                    return snapshot.data()
+                }
+            } catch(e) {
+                console.log(e)
             }
         }
     },

@@ -1,21 +1,36 @@
 <template>
   <div>
+    <ImageModal 
+      v-if="showModal" 
+      @close="showModal = false"
+      @submit="uploadImage"
+    />
     <form
+      @submit.prevent="createQuickPost"
       class="flex items-center justify-between p-2 w-full h-14 bg-white rounded-xl space-x-4"
     >
-      <label
-        v-if="uploadImage"
-        class="h-full w-20 border cursor-pointer relative"
+      <div
+        v-if="!postImage"
+        @click="showModal = true"
+        class="flex flex-shrink-0 items-center justify-center w-10 h-10 bg-gray-100 text-gray-500 p-1 rounded-full cursor-pointer transition-all hover:bg-gray-200"
       >
-        <input
-          accept="image/png, image/gif, image/jpeg"
-          class="absolute hidden w-full"
-          type="file"
-          @change="fileUpload"
-        />
-        <img :src="uploadImage" class="w-full h-full object-cover" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+      <div v-else @click="showModal = true" class="h-full w-20 border cursor-pointer relative">
+        <img :src="postImage" class="w-full h-full object-cover" />
         <button
-          @click.stop.prevent="uploadImage = null"
+          @click.stop.prevent="postImage = ''"
           class="absolute top-1 right-1 transform translate-x-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full border-none outline-none cursor-pointer bg-red-500 text-white"
         >
           <svg
@@ -33,39 +48,21 @@
             />
           </svg>
         </button>
-      </label>
-
-      <label
-        v-else
-        class="flex flex-shrink-0 items-center justify-center w-10 h-10 bg-gray-100 text-gray-500 p-1 rounded-full cursor-pointer transition-all hover:bg-gray-200"
-      >
-        <input
-          accept="image/png, image/gif, image/jpeg"
-          class="absolute hidden"
-          type="file"
-          @change="fileUpload"
-        />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </label>
+      </div>
 
       <input
+        ref="title"
         type="text"
-        class="px-2 w-full h-full border rounded hover:border-gray-300"
+        class="px-2 w-full h-full border rounded hover:border-gray-300 outline-blue-600 outline-1"
         placeholder="Create post"
+        v-model="postTitle"
+        @keyup.enter="createQuickPost"
       />
 
+      <SpinnerLoading v-if="isLoading" />
       <button
+        v-else
+        type="submit"
         class="flex items-center justify-center flex-shrink-0 bg-blue-500 w-10 h-10 rounded-full text-white transition-all hover:bg-blue-600"
       >
         <svg class="w-5" viewBox="0 0 24 24">
@@ -76,18 +73,37 @@
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
+import ImageModal from '@/views/components/UI/ImageModal.vue'
 export default {
   name: "QuickPost",
   data() {
     return {
-      uploadImage: null,
+      postTitle: "",
+      postImage: "",
+      isLoading: false,
+      showModal: false,
     };
   },
+  components: {
+    ImageModal,
+  },
   methods: {
-    fileUpload(e) {
-      const file = e.target.files[0];
-      this.uploadImage = URL.createObjectURL(file);
+    ...mapActions("posts", ["createPost"]),
+    async createQuickPost() {
+      this.isLoading = true;
+
+      await this.createPost({ title: this.postTitle, image: this.postImage });
+
+      this.isLoading = false;
+      this.postTitle = "";
+      this.postImage = "";
     },
+    uploadImage(url) {
+      this.postImage = url
+      this.showModal = false
+      this.$refs.title.focus()
+    }
   },
 };
 </script>

@@ -17,13 +17,8 @@
         </router-link>
       </div>
       <div v-else class="relative">
-        <div class="flex">
-          <button
-            @click="showDropdown = !showDropdown"
-            class="select-none cursor-pointer"
-          >
-            {{ user.displayName }}
-          </button>
+        <div @click="showDropdown = !showDropdown" class="flex select-none cursor-pointer">
+          <button>{{ user.displayName }}</button>
           <div class="w-6 h-6 rounded-full overflow-hidden ml-2">
             <img
               class="w-full h-full object-cover"
