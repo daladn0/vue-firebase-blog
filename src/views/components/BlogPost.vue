@@ -22,19 +22,16 @@
       </a>
       <div class="p-5">
         <a href="#">
-          <h5 class="text-gray-900 font-bold text-2xl tracking-tight mb-2">
+          <h5 v-if="post.title" class="text-gray-900 font-bold text-2xl tracking-tight">
             {{ post.title }}
           </h5>
         </a>
-        <p class="font-normal text-gray-700 mb-3">{{ post.description }}</p>
+        <p class="font-normal text-gray-700" v-if="post.description">{{ post.description }}</p>
       </div>
       <div class="px-4 py-2 border-t">
-        <a
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
-          href="#"
-        >
+        <router-link :to="`/post/${post.id}`" class="w-fit block px-2 py-1 text-blue-600 bg-opacity-50 rounded-md transition-all hover:bg-blue-100">
           Read more
-        </a>
+        </router-link>
       </div>
     </div>
   </div>
@@ -56,7 +53,6 @@ export default {
     },
     async mounted() {
         this.postCreator = await this.fetchUserByID(this.post.creator_id);
-        console.log(this.postCreator);
         this.isLoading = false
     },
 };

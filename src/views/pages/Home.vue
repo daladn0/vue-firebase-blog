@@ -7,7 +7,7 @@
       <QuickPost v-if="isLoggedIn" class="mb-8" />
       <div class="flex flex-col">
         <!-- eslint-disable-next-line -->
-        <BlogPost v-for="post in posts" :post="post" />
+        <BlogPost v-for="post in posts" :key="post.id" :post="post" />
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@ export default {
     onSnapshot(q, collection => {
       const posts = [];
       collection.forEach((doc) => {
-        posts.push(doc.data());
+        posts.push({id: doc.id, ...doc.data()});
       });
       this.setPosts(posts.reverse())
     });

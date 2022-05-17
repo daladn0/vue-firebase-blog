@@ -12,7 +12,7 @@ export default {
     }
   },
   actions: {
-    async createPost(ctx, { title, image = "", description = "" }) {
+    async createPost(ctx, { title = "", image = "", description = "" }) {
       try {
         const db = getFirestore();
         const auth = getAuth()

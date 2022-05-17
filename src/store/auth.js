@@ -34,14 +34,11 @@ export default {
                 commit('setIsDataLoading', false)
             }
         },
-        async logout({ commit }) {
+        async logout() {
             try {
-                commit('setIsDataLoading', true)
                 await signOut(getAuth())
             } catch (e) {
                 return e
-            } finally {
-                commit('setIsDataLoading', false)
             }
         },
         async signup({ commit }, { email, password, name }) {
