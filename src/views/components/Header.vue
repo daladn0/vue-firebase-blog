@@ -1,10 +1,14 @@
 <template>
-  <header
-    class="w-screen flex flex-row items-center px-8 justify-between bg-white shadow-xs h-11"
+  <Modal 
+    @close="showModal = false"
+    v-if="showModal"
   >
-    <router-link to="/" class="text-lg text-gray-700 font-bold hidden md:flex"
-      >Daladn0's blog</router-link
-    >
+    
+  </Modal>
+  <header
+    class="w-full flex flex-row items-center px-8 justify-between bg-white shadow-xs h-11"
+  >
+    <router-link to="/" class="text-lg text-gray-700 font-bold hidden md:flex">Daladn0's blog</router-link>
 
     <div>
       <SpinnerLoading v-if="isDataLoading" />
@@ -17,7 +21,10 @@
         </router-link>
       </div>
       <div v-else class="relative">
-        <div @click="showDropdown = !showDropdown" class="flex select-none cursor-pointer">
+        <div
+          @click="showDropdown = !showDropdown"
+          class="flex select-none cursor-pointer"
+        >
           <button>{{ user.displayName }}</button>
           <div class="w-6 h-6 rounded-full overflow-hidden ml-2">
             <img
@@ -27,7 +34,11 @@
             />
           </div>
         </div>
-        <Dropdown :user="user" v-if="showDropdown" />
+        <Dropdown 
+          @create-post="showModal = true" 
+          :user="user" 
+          v-if="showDropdown"
+        />
       </div>
     </div>
   </header>
@@ -35,14 +46,17 @@
 <script>
 import { mapState } from "vuex";
 import Dropdown from "@/views/components/UI/Dropdown.vue";
+import Modal from '@/views/components/UI/Modal.vue'
 export default {
   name: "HeaderComponent",
   components: {
     Dropdown,
+    Modal,
   },
   data() {
     return {
       showDropdown: false,
+      showModal: false,
     };
   },
   computed: {

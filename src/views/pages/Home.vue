@@ -1,11 +1,11 @@
 <template>
-  <div class="home">
+  <div class="home pb-8">
     <div class="w-fit mx-auto" v-if="isDataLoading">
       <SpinnerLoading />
     </div>
     <div v-else class="max-w-2xl mx-auto flex flex-col justify-center">
       <QuickPost v-if="isLoggedIn" class="mb-8" />
-      <div class="flex flex-col">
+      <div class="flex flex-col space-y-8">
         <!-- eslint-disable-next-line -->
         <BlogPost v-for="post in posts" :key="post.id" :post="post" />
       </div>
