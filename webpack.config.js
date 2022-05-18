@@ -11,6 +11,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
   },
+  devServer: {
+    historyApiFallback: true, // Fixed ' cannot GET/ ' problem
+  },
   module: {
     rules: [
       {

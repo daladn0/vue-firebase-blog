@@ -7,10 +7,12 @@
 </template>
 <script>
 import MainLayout from '@views/layouts/MainLayout.vue'
+import EmptyLayout from '@views/layouts/EmptyLayout.vue'
 export default {
   name: 'App',
   components: {
-    MainLayout
+    MainLayout,
+    EmptyLayout,
   },
   computed: {
     layout() {

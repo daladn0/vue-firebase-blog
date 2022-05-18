@@ -10,6 +10,14 @@ const routes = [
       layout: 'MainLayout'
     }
   },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import('@views/pages/Login/index.vue'),
+    meta: {
+      layout: 'EmptyLayout'
+    }
+  },
 ];
 
 const router = createRouter({
