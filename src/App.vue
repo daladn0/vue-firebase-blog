@@ -1,7 +1,7 @@
 <template>
   <div>
     <component :is="layout">
-      <h1>Hi</h1>
+      <router-view />
     </component>
   </div>
 </template>
@@ -20,3 +20,8 @@ export default {
   }
 }
 </script>
+<style>
+body {
+  background: rgb(235, 235, 235);
+}
+</style>

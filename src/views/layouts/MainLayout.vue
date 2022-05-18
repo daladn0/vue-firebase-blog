@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar/>
-    <div class="container">
+    <div class="wrapper pt-8">
       <slot/>
     </div>
   </div>
@@ -15,3 +15,9 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+</style>

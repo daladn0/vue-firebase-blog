@@ -3,7 +3,12 @@ module.exports = {
     "./src/**/*.{html,js,vue}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      maxWidth: {
+        '250px': '250px',
+        '3/4': '80%',
+      }
+    },
   },
   plugins: [],
 }

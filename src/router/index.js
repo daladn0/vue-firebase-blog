@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Posts from '@/views/pages/Posts/Posts.vue'
+import PostsList from '@/views/pages/Posts/PostsList.vue'
 
 const routes = [
   {
     path: "/",
-    name: "Posts",
-    component: Posts,
+    name: "PostsList",
+    component: PostsList,
     meta: {
       layout: 'MainLayout'
     }
