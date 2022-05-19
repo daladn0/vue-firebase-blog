@@ -1,19 +1,26 @@
 <template>
-  <div>
-    <Navbar/>
-    <div class="wrapper pt-8">
-      <slot/>
+  <div :class="{ 'w-full h-screen flex items-center justify-center': isDataLoading }">
+    <Spinner class="w-14 h-14" v-if="isDataLoading" />
+    <div v-else>
+      <Navbar />
+      <div class="wrapper pt-8">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
 <script>
-import Navbar from '@views/components/Navbar/Navbar.vue'
+import Navbar from "@views/components/Navbar/index.vue";
+import { mapGetters } from "vuex";
 export default {
-  name: 'MainLayout',
+  name: "MainLayout",
+  computed: {
+    ...mapGetters('auth', ['isDataLoading', 'isLoggedIn'])
+  },
   components: {
-    Navbar
-  }
-}
+    Navbar,
+  },
+};
 </script>
 <style lang="scss">
 .wrapper {

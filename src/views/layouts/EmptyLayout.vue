@@ -6,6 +6,15 @@
             </svg>
             Go back
         </router-link>
-        <slot/>
+        <slot />
     </div>
 </template>
+<script>
+import { mapGetters } from "vuex";
+export default {
+    name: "EmptyLayout",
+    computed: {
+        ...mapGetters("auth", ["isDataLoading"]),
+    },
+};
+</script>

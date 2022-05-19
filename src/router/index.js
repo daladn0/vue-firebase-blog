@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import PostsList from '@/views/pages/Posts/PostsList.vue'
+import PostsList from '@/views/pages/Posts/index.vue'
 
 const routes = [
   {

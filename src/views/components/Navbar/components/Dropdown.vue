@@ -29,13 +29,17 @@
 
     <div class="w-full h-px bg-gray-200" />
 
-    <button type="button" class="w-full text-left transition-all hover:bg-gray-100 p-2">
+    <button @click.prevent="logout(); $emit('close')" type="button" class="w-full text-left transition-all hover:bg-gray-100 p-2">
       Sign out
     </button>
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: "Dropdown",
+  methods: {
+    ...mapActions('auth', ['logout'])
+  }
 };
 </script>
