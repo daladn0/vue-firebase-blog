@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import Navbar from "@views/components/Navbar/index.vue";
+import Navbar from '@views/layouts/components/Navbar.vue'
 import { mapGetters } from "vuex";
 export default {
   name: "MainLayout",
@@ -19,7 +19,7 @@ export default {
   },
   components: {
     Navbar,
-  },
+  }
 };
 </script>
 <style lang="scss">
