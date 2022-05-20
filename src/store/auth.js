@@ -5,11 +5,13 @@ export default {
         user: {},
         isLoggedIn: false,
         isDataLoading: false,
+        error: null,
     }),
     getters: {
         user: state => state.user,
         isLoggedIn: state => state.isLoggedIn,
-        isDataLoading: state => state.isDataLoading
+        isDataLoading: state => state.isDataLoading,
+        error: state => state.error
     },
     mutations: {
         setUser(state, user) {
@@ -24,17 +26,27 @@ export default {
         },
         setIsDataLoading(state, payload) {
             state.isDataLoading = payload
+        },
+        setError(state, errorCode) {
+            state.error = errorCode
+        },
+        clearError(state) {
+            state.error = null
         }
     },
     actions: {
         async login({commit}, { email, password }) {
             try {
+                commit('setError', null)
                 commit('setIsDataLoading', true)
                 const auth = getAuth()
-                const userCreds = await signInWithEmailAndPassword(auth, email, password)
-                return userCreds
+                await signInWithEmailAndPassword(auth, email, password)
+                return true
             } catch(e) {
-                console.log(e)
+                if ( e && e.code ) {
+                    commit('setError', e.code)
+                }
+                return e
             } finally {
                 commit('setIsDataLoading', false)
             }

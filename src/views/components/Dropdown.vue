@@ -12,7 +12,7 @@
         <p class="text-gray-800 font-semibold whitespace-nowrap block truncate">
           Mark Kostevych
         </p>
-        <p class="text-gray-500 truncate block">markkostevycg@gmail.com</p>
+        <p class="text-gray-500 truncate block">markkostevych@gmail.com</p>
       </div>
 
       <div class="w-5 h-5 bg-white rounded-tl absolute top-0 right-3.5 tranfrom rotate-45 -translate-y-1/2 -translate-x-px transition-all group-hover:bg-gray-100" /> <!-- pointer -->
@@ -29,7 +29,7 @@
 
     <div class="w-full h-px bg-gray-200" />
 
-    <button @click.prevent="logout(); $emit('close')" type="button" class="w-full text-left transition-all hover:bg-gray-100 p-2">
+    <button @click="signOut" type="button" class="w-full text-left transition-all hover:bg-gray-100 p-2">
       Sign out
     </button>
   </div>
@@ -39,7 +39,12 @@ import { mapActions } from 'vuex';
 export default {
   name: "Dropdown",
   methods: {
-    ...mapActions('auth', ['logout'])
-  }
+    ...mapActions('auth', ['logout']),
+    async signOut() {
+      await this.logout();
+      this.$emit('close')
+      this.$router.push('/login')
+    },
+  },
 };
 </script>
