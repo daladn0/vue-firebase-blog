@@ -7,13 +7,13 @@
         Login
       </router-link>
       <button id="triggerDropdown" @click="showDropDown = !showDropDown" v-else class="flex items-center relative transition-all px-2 h-full hover:bg-gray-100">
-        <p class="text-gray-800">Mark Kostevych</p>
+        <p class="text-gray-800">{{user.displayName}}</p>
         <div class="w-8 h-8 rounded-full overflow-hidden ml-4">
-          <img class="w-full h-full object-cover" src="https://lwlies.com/wp-content/uploads/2017/04/avatar-2009.jpg" alt="">
+          <img class="w-full h-full object-cover" :src="user.photoURL" :alt="user.displayName">
         </div>
       </button>
 
-      <Dropdown trigger="triggerDropdown" v-click-outside="collapseDropdown" v-if="showDropDown" class="absolute right-0 top-full mt-4"/>
+      <Dropdown :user="user" trigger="triggerDropdown" v-click-outside="collapseDropdown" v-if="showDropDown" class="absolute right-0 top-full mt-4"/>
     </div>
   </header>
 </template>

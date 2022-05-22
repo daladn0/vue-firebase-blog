@@ -44,7 +44,7 @@
           class="w-full h-12 font-semibold text-white outline-none bg-blue-700 hover:bg-blue-800 ring-blue-700 focus:ring-2 rounded-lg px-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           <Spinner class="block mx-auto" v-if="isDataLoading" />
-          <span v-else>Login to your account</span>
+          <span v-else>Create an account</span>
         </button>
         <p v-if="error" class="text-red-500 text-sm text-center">
           {{ errors[error] || "Something went wrong" }}

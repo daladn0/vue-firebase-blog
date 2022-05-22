@@ -1,18 +1,18 @@
 <template>
-  <div class="rounded bg-white shadowmax-w-250px text-gray-500">
+  <div class="w-full max-w-250px min-w-250px rounded bg-white shadow text-gray-500">
     <div class="flex items-center transition-all group hover:bg-gray-100 p-2"> <!--header-->
       <div class="w-8 h-8 rounded-full overflow-hidden mr-2 flex-shrink-0">
         <img
           class="w-full h-full object-cover"
-          src="https://lwlies.com/wp-content/uploads/2017/04/avatar-2009.jpg"
-          alt=""
+          :src="user.photoURL"
+          :alt="user.displayName"
         />
       </div>
       <div class="text-left max-w-3/4 leading-tight">
         <p class="text-gray-800 font-semibold whitespace-nowrap block truncate">
-          Mark Kostevych
+         {{user.displayName}}
         </p>
-        <p class="text-gray-500 truncate block">markkostevych@gmail.com</p>
+        <p class="text-gray-500 truncate block">{{user.email}}</p>
       </div>
 
       <div class="w-5 h-5 bg-white rounded-tl absolute top-0 right-3.5 tranfrom rotate-45 -translate-y-1/2 -translate-x-px transition-all group-hover:bg-gray-100" /> <!-- pointer -->
@@ -38,6 +38,7 @@
 import { mapActions } from 'vuex';
 export default {
   name: "Dropdown",
+  props: ['user'],
   methods: {
     ...mapActions('auth', ['logout']),
     async signOut() {

@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 const { VueLoaderPlugin } = require("vue-loader");
 const htmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -61,6 +62,10 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+        __VUE_OPTIONS_API__: true, // If you are using the options api.
+        __VUE_PROD_DEVTOOLS__: false, // If you don't want people sneaking around your components in production.
+    }),
     new VueLoaderPlugin(),
     new htmlWebpackPlugin({
       template: path.resolve(__dirname, "public", "index.html"),
