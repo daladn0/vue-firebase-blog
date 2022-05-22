@@ -38,10 +38,10 @@ app.directive('click-outside', {
         binding.value()
       }
     };
-    document.body.addEventListener('click', el.clickOutsideEvent)
+    document.addEventListener('click', el.clickOutsideEvent)
   },
   beforeUnmount: (el) => {
-    document.body.removeEventListener('click', el.clickOutsideEvent)
+    document.removeEventListener('click', el.clickOutsideEvent)
   },
 })
 

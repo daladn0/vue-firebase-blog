@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'w-full h-screen flex items-center justify-center': isDataLoading }">
+  <div class="pb-8" :class="{ 'w-full h-screen flex items-center justify-center': isDataLoading }">
     <Spinner class="w-14 h-14" v-if="isDataLoading" />
     <div v-else>
       <Navbar />

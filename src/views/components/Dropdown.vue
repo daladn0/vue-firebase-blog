@@ -20,9 +20,15 @@
 
     <div class="w-full h-px bg-gray-200" />
 
+    <router-link @click="$emit('close')" to='/' class="block w-full text-left transition-all hover:bg-gray-100 p-2">
+      Home
+    </router-link>
     <button type="button" class="w-full text-left transition-all hover:bg-gray-100 p-2">
       Profile
     </button>
+    <router-link @click="$emit('close')" to='/categories' class="block w-full text-left transition-all hover:bg-gray-100 p-2">
+      Categories
+    </router-link>
     <button type="button" class="w-full text-left transition-all hover:bg-gray-100 p-2">
       Create Post
     </button>

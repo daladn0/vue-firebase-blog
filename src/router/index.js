@@ -12,6 +12,14 @@ const routes = [
     }
   },
   {
+    path: "/categories",
+    name: "Categories",
+    component: () => import('@views/pages/Categories/index.vue'),
+    meta: {
+      layout: 'MainLayout'
+    }
+  },
+  {
     path: "/login",
     name: "Login",
     component: () => import('@views/pages/Login/index.vue'),

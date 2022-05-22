@@ -26,4 +26,13 @@ export default {
 body {
   background: rgb(235, 235, 235);
 }
+select{
+    background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right;
+    background-size: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-position-x: 95%;
+}
+
 </style>
