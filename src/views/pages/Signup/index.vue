@@ -5,7 +5,7 @@
     >
       <Form
         @submit="submit"
-        @invalid-submit="onInvalidSubmit"
+        @invalid-submit="({results}) => focusInvalidInput(fields, results, $refs)"
         class="space-y-8"
         :validation-schema="validationSchema"
       >
@@ -69,6 +69,8 @@ import { mapActions, mapGetters } from "vuex";
 import { Form, Field, ErrorMessage, configure } from "vee-validate";
 import { string, required, password, object, oneOf, ref } from "yup";
 import errors from "@/constants/errors";
+import fieldsConstants from '@/constants/fields'
+import {focusInvalidInput} from '@/helpers/methods'
 
 configure({
   validateOnModelUpdate: false,
@@ -84,7 +86,6 @@ export default {
     ErrorMessage,
   },
   data() {
-    const passwordMinLength = 6;
     return {
       name: "",
       email: "",
@@ -97,8 +98,8 @@ export default {
           password: string()
             .required("Password can't be empty")
             .min(
-              passwordMinLength,
-              `Yup can't be shorter than ${passwordMinLength} chars!`
+              fieldsConstants.PASSWORD_MIN_LENGTH,
+              `Yup can't be shorter than ${fieldsConstants.PASSWORD_MIN_LENGTH} chars!`
             ),
           passwordConfirm: string()
             .required("Password can't be empty")
@@ -166,25 +167,7 @@ export default {
 
       this.$router.push("/");
     },
-
-    onInvalidSubmit({ results }) {
-      const invalidFields = [];
-
-      // Setting proper order for inputs
-      this.fields.forEach(({ name }) => {
-        invalidFields.push({ ...results[name], name });
-      });
-
-      // Focusing the very first invalid input
-      invalidFields.every(({ name, valid }) => {
-        if (!valid) {
-          this.$refs[name][0].focus();
-          return false;
-        }
-
-        return true;
-      });
-    },
+    focusInvalidInput,
   },
 };
 </script>

@@ -68,7 +68,6 @@ export default {
 
             } catch (e) {
                 if (e && e.code) {
-                    console.log(e.code)
                     commit('setError', e.code)
                 }
                 return e
