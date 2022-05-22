@@ -1,10 +1,12 @@
 <template>
     <div class="space-y-8">
+        <QuickPost v-if="isLoggedIn" />
         <PostItem v-for="i of 5" :key="i"/>
     </div>
 </template>
 <script>
 import PostItem from '@views/pages/Posts/components/PostItem.vue'
+import QuickPost from '@views/pages/Posts/components/QuickPost.vue'
 import { mapGetters } from 'vuex'
 export default {
     name: 'PostsList',
@@ -12,7 +14,8 @@ export default {
         ...mapGetters('auth', ['user', 'isDataLoading', 'isLoggedIn']),
     },
     components: {
-        PostItem
+        PostItem,
+        QuickPost,
     }
 }
 </script>
