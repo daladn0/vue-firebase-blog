@@ -17,3 +17,11 @@ export function focusInvalidInput(fields, entries, refs) {
         return true;
     });
 }
+
+export function getFieldClasses(error, touched) {
+    return (error && touched) ?
+        "ring-red-500 border-red-500 focus:ring-red-500 focus:border-red-500"
+        : !error && touched
+            ? "ring-green-500 border-green-500 focus:ring-green-600 focus:border-green-600"
+            : "focus:ring-blue-500 focus:border-blue-500";
+}

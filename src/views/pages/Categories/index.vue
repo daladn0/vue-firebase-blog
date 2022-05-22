@@ -1,23 +1,29 @@
 <template>
   <div class="space-y-8">
     <div class="grid gap-8 grid-cols-2">
-      <Form class="space-y-4">
-        <Field name="new-category" v-slot="{ field, errors }">
+      <Form
+        @submit="createNewCategory"
+        @invalid-submit="$refs['categoryTitle'].focus()"
+        :validation-schema="addCategoryValidationSchema"
+        class="space-y-4"
+      >
+        <Field name="categoryTitle" v-slot="{ field, errors, meta }">
           <div>
             <label
-              for="new-category"
+              for="categoryTitle"
               class="text-2xl text-gray-900 font-medium block mb-2 dark:text-gray-300"
             >
               Add new category
             </label>
             <input
+              ref="categoryTitle"
+              v-model="newCategoryTitle"
               v-bind="field"
               class="bg-gray-50 border outline-none focus:ring-2 border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
               placeholder="Category title"
+              :class="getFieldClasses(errors[0], meta.touched)"
             />
-            <span class="text-red-500 text-sm" v-if="errors[0] && meta.touched">{{
-              errors[0]
-            }}</span>
+            <span class="text-red-500 text-sm" v-if="errors[0]">{{ errors[0] }}</span>
           </div>
         </Field>
 
@@ -30,64 +36,90 @@
         </button>
       </Form>
 
-      <Form class="space-y-4">
+      <Form
+        @submit="updateCategoryTitle"
+        @invalid-submit="$refs['update-category'].focus()"
+        class="space-y-4"
+        :validation-schema="updateCategoryValidationSchema"
+      >
         <div>
           <label for="new-category" class="text-2xl text-gray-900 font-medium block mb-2">
             Select category
           </label>
-          <Field
-            as="select"
-            name="new-category"
+          <select
             class="bg-gray-50 border outline-none focus:ring-2 border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+            v-model="selectedCategory"
           >
             <option value="" disabled selected>Choose category</option>
-            <option v-for="cat in cats" :key="cat" :value="cat">{{ cat }}</option>
-          </Field>
+            <option
+              v-for="category in categories"
+              :key="category.title"
+              :value="category"
+            >
+              {{ category.title }}
+            </option>
+          </select>
         </div>
 
-        <input
-          class="bg-gray-50 border outline-none focus:ring-2 border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
-          placeholder="Category title"
-        />
+        <div v-show="selectedCategory" class="space-y-4">
+          <Field name="selectedCategoryTitle" v-slot="{ handleChange, field, errors, meta }">
+            <input
+              v-bind="field"
+              name="selectedCategoryTitle"
+              ref="update-category"
+              v-model="updatedCategoryTitle"
+              class="bg-gray-50 border outline-none focus:ring-2 border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+              placeholder="New title"
+              :class="getFieldClasses(errors[0], meta.touched)"
+            />
+            <span class="text-red-500 text-sm" v-if="errors[0]">{{ errors[0] }}</span>
+          </Field>
 
-        <div class="w-full grid grid-cols-2 gap-4">
-          <button
-            v-if="true"
-            type="submit"
-            class="w-full py-2.5 font-semibold text-white outline-none bg-blue-700 hover:bg-blue-800 ring-blue-700 focus:ring-2 rounded-lg px-5 text-center"
-          >
-            <Spinner class="block mx-auto" v-if="isDataLoading" />
-            <span v-else>Update title</span>
-          </button>
-          <button
-            v-if="true"
-            type="submit"
-            class="w-full font-semibold text-white outline-none bg-red-500 hover:bg-red-600 ring-red-700 focus:ring-2 rounded-lg px-5 text-center"
-          >
-            <Spinner class="block mx-auto" v-if="isDataLoading" />
-            <span v-else>Remove category</span>
-          </button>
+          <div class="w-full grid grid-cols-2 gap-4">
+            <button
+              type="submit"
+              class="w-full py-2.5 font-semibold text-white outline-none bg-blue-700 hover:bg-blue-800 ring-blue-700 focus:ring-2 rounded-lg px-5 text-center"
+            >
+              <Spinner class="block mx-auto" v-if="isDataLoading" />
+              <span v-else>Update title</span>
+            </button>
+            <button
+              type="button"
+              @click="deleteCategory"
+              class="w-full font-semibold text-white outline-none bg-red-500 hover:bg-red-600 ring-red-700 focus:ring-2 rounded-lg px-5 text-center"
+            >
+              Remove category
+            </button>
+          </div>
         </div>
       </Form>
     </div>
 
-    <div class="relative shadow-md">
+    <div class="relative shadow-md" v-if="selectedCategory">
       <div class="flex items-center absolute -left-4 top-0 transform -translate-x-full">
-        <p class="block mr-4">Amount: </p>
-        <select class="w-full p-2.5 pr-6 bg-gray-50 border outline-none border-gray-300 text-gray-900 rounded-lg">
+        <p class="block mr-4">Amount:</p>
+        <select
+          class="w-full p-2.5 pr-6 bg-gray-50 border outline-none border-gray-300 text-gray-900 rounded-lg"
+        >
           <option value="25" selected>25</option>
-          <option value="50" >50</option>
-          <option value="75" >75</option>
-          <option value="100" >100</option>
+          <option value="50">50</option>
+          <option value="75">75</option>
+          <option value="100">100</option>
         </select>
       </div>
-      <PostsList/>
+      <PostsList />
     </div>
   </div>
 </template>
 <script>
 import { Form, Field } from "vee-validate";
-import PostsList from '@views/pages/Categories/components/PostsList.vue'
+import PostsList from "@views/pages/Categories/components/PostsList.vue";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import { string, required, object, test } from "yup";
+import { markRaw } from "vue";
+import { getFieldClasses } from "@/helpers/methods";
+import { collection, query, onSnapshot, getFirestore } from "firebase/firestore";
+
 export default {
   name: "Categories",
   components: {
@@ -97,8 +129,58 @@ export default {
   },
   data() {
     return {
-      cats: ["Web development", "Programming", "Cooking", "Something awful"],
+      newCategoryTitle: "",
+      selectedCategory: "",
+      updatedCategoryTitle: "",
+      addCategoryValidationSchema: markRaw(
+        object({
+          categoryTitle: string().required("Category name can't be empty!"),
+        })
+      ),
+      updateCategoryValidationSchema: markRaw(
+        object({
+          selectedCategoryTitle: string()
+            .test(
+              "same-value",
+              "Title is the same as before",
+              (value) => value !== this.selectedCategory.title
+            )
+            .required("New category title can't be empty!"),
+        })
+      ),
     };
+  },
+  computed: {
+    ...mapGetters("auth", ["user", "isDataLoading", "isLoggedIn", "error"]),
+    ...mapGetters("categories", ["categories"]),
+  },
+  methods: {
+    ...mapActions("categories", ["createCategory", "updateCategory", "removeCategory"]),
+    ...mapMutations("categories", ["setCategories"]),
+    async createNewCategory() {
+      await this.createCategory({ title: this.newCategoryTitle });
+    },
+    async updateCategoryTitle() {
+      await this.updateCategory({
+        ...this.selectedCategory,
+        title: this.updatedCategoryTitle,
+      });
+    },
+    async deleteCategory() {
+      await this.removeCategory({ id: this.selectedCategory.id })
+    },
+    getFieldClasses,
+  },
+  created() {
+    // Receive new categories list from firebase whenever it updates
+    const q = query(collection(getFirestore(), "categories"));
+    onSnapshot(q, (querySnapshot) => {
+      const categories = [];
+      querySnapshot.forEach((doc) => {
+        categories.push({ ...doc.data(), id: doc.id });
+      });
+      this.setCategories(categories);
+    });
   },
 };
 </script>
