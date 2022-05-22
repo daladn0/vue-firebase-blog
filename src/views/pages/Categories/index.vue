@@ -1,4 +1,21 @@
 <template>
+  <Modal v-if="showModal" @close='showModal = false' >
+    <h3 class="text-2xl text-center">Do you really want to remove <span class="font-semibold">{{ selectedCategory.title }}</span> category?</h3>
+    <div class="flex items-center justify-center mt-6">
+      <button @click="deleteCategory();showModal = false;" type="button" class='flex items-center transition-all text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2' >
+        Remove
+        <svg class="w-6 h-6 ml-2">
+          <use xlink:href='sprite.svg#tick' />
+        </svg>
+      </button>
+      <button @click="showModal = false;" type="button" class='flex items-center transition-all focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2' >
+        Cancel
+        <svg class="w-6 h-6 ml-2">
+          <use xlink:href='sprite.svg#close' />
+        </svg>
+      </button>
+    </div>
+  </Modal>
   <div class="space-y-8">
     <div class="grid gap-8 grid-cols-2">
       <Form
@@ -62,7 +79,7 @@
         </div>
 
         <div v-show="selectedCategory" class="space-y-4">
-          <Field name="selectedCategoryTitle" v-slot="{ handleChange, field, errors, meta }">
+          <Field name="selectedCategoryTitle" v-slot="{ field, errors, meta }">
             <input
               v-bind="field"
               name="selectedCategoryTitle"
@@ -85,7 +102,7 @@
             </button>
             <button
               type="button"
-              @click="deleteCategory"
+              @click="showModal = true"
               class="w-full font-semibold text-white outline-none bg-red-500 hover:bg-red-600 ring-red-700 focus:ring-2 rounded-lg px-5 text-center"
             >
               Remove category
@@ -112,13 +129,14 @@
   </div>
 </template>
 <script>
-import { Form, Field } from "vee-validate";
-import PostsList from "@views/pages/Categories/components/PostsList.vue";
-import { mapActions, mapGetters, mapMutations } from "vuex";
-import { string, required, object, test } from "yup";
 import { markRaw } from "vue";
-import { getFieldClasses } from "@/helpers/methods";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import { collection, query, onSnapshot, getFirestore } from "firebase/firestore";
+import { Form, Field } from "vee-validate";
+import { string, required, object, test } from "yup";
+import { getFieldClasses } from "@/helpers/methods";
+import PostsList from "@views/pages/Categories/components/PostsList.vue";
+import Modal from '@views/components/Modal.vue' 
 
 export default {
   name: "Categories",
@@ -126,9 +144,11 @@ export default {
     Form,
     Field,
     PostsList,
+    Modal,
   },
   data() {
     return {
+      showModal: false,
       newCategoryTitle: "",
       selectedCategory: "",
       updatedCategoryTitle: "",
