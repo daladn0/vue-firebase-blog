@@ -25,3 +25,14 @@ export function getFieldClasses(error, touched) {
             ? "ring-green-500 border-green-500 focus:ring-green-600 focus:border-green-600"
             : "focus:ring-blue-500 focus:border-blue-500";
 }
+
+export function isDescendant(parent, child) {
+    var node = child.parentNode;
+    while (node != null) {
+        if (node == parent) {
+            return true;
+        }
+        node = node.parentNode;
+    }
+    return false;
+  }

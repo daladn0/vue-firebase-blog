@@ -70,7 +70,7 @@ import { Form, Field, ErrorMessage, configure } from "vee-validate";
 import { string, required, password, object, oneOf, ref } from "yup";
 import errors from "@/constants/errors";
 import fieldsConstants from '@/constants/fields'
-import {focusInvalidInput} from '@/helpers/methods'
+import {focusInvalidInput} from '@/helpers'
 
 configure({
   validateOnModelUpdate: false,

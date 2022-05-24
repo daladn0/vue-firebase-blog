@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="i in 50" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <tr v-for="i in 50" :key="i" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <th
               class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
             >
@@ -20,17 +20,18 @@
             </th>
             <td class="px-6 py-4">
               <div class="w-full max-w-100px">
-                <img src="https://navsurf.com/wp-content/uploads/2019/09/webdev.jpg" />
+                <img src="https://navsurf.com/wp-content/uploads/2019/09/webdev.jpg" alt="" />
               </div>
             </td>
             <td class="px-6 py-4">Web development</td>
             <td class="px-6 py-4">22.05.2022 17:26</td>
             <td class="px-6 py-4 text-right">
               <router-link
-                to="/posts/1"
+                to="/"
                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                >Open</router-link
               >
+                Open
+              </router-link>
             </td>
           </tr>
         </tbody>

@@ -134,7 +134,7 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 import { collection, query, onSnapshot, getFirestore } from "firebase/firestore";
 import { Form, Field } from "vee-validate";
 import { string, required, object, test } from "yup";
-import { getFieldClasses } from "@/helpers/methods";
+import { getFieldClasses } from "@/helpers";
 import PostsList from "@views/pages/Categories/components/PostsList.vue";
 import Modal from '@views/components/Modal.vue' 
 
@@ -154,7 +154,23 @@ export default {
       updatedCategoryTitle: "",
       addCategoryValidationSchema: markRaw(
         object({
-          categoryTitle: string().required("Category name can't be empty!"),
+          categoryTitle: string()
+            .required("Category name can't be empty!")
+            .test(
+              'already-exists',
+              'Such a category already exists',
+              ( value ) => {
+                let exists = true
+                this.categories.forEach(category => {
+                  if ( !value ) return
+                  if ( value.toLowerCase() === category.title.toLowerCase() ) {
+                    exists = false
+                  }
+                })
+
+                return exists
+              }
+            )
         })
       ),
       updateCategoryValidationSchema: markRaw(

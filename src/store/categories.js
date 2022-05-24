@@ -22,7 +22,7 @@ export default {
 
                 const auth = getAuth()
                 const db = getFirestore()
-                const result = await addDoc(collection(db, "categories"), {
+                await addDoc(collection(db, "categories"), {
                     title,
                     creator_id: auth.currentUser.uid
                 });
