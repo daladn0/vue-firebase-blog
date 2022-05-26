@@ -12,6 +12,14 @@ const routes = [
     }
   },
   {
+    path: '/create-post',
+    name: 'CreatePost',
+    component: () => import('@/views/pages/Posts/PostCreate.vue'),
+    meta: {
+      layout: 'MainLayout'
+    }
+  },
+  {
     path: "/categories",
     name: "Categories",
     component: () => import('@views/pages/Categories/index.vue'),

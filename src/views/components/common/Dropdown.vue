@@ -29,9 +29,9 @@
     <router-link @click="$emit('close')" to='/categories' class="block w-full text-left transition-all hover:bg-gray-100 p-2">
       Categories
     </router-link>
-    <button type="button" class="w-full text-left transition-all hover:bg-gray-100 p-2">
+    <router-link @click="$emit('close')" to="/create-post" type="button" class="block w-full text-left transition-all hover:bg-gray-100 p-2">
       Create Post
-    </button>
+    </router-link>
 
     <div class="w-full h-px bg-gray-200" />
 

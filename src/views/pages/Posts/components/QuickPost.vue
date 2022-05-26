@@ -64,7 +64,7 @@
       <button
         v-else
         type="submit"
-        class="flex flex-shrink-0 ml-auto items-center justify-center w-10 h-10 bg-blue-500 rounded transition-all hover:bg-blue-600"
+        class="flex flex-shrink-0 ml-auto items-center justify-center w-10 h-10 bg-blue-500 rounded-lg transition-all hover:bg-blue-600"
       >
         <svg class="w-6 h-6 text-white">
           <use xlink:href="sprite.svg#send" />
