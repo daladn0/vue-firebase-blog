@@ -19,6 +19,5 @@ onAuthStateChanged(auth, (user) => {
   } else {
     store.commit('auth/setUser', null)
   }
-
   store.commit('auth/setIsDataLoading', false)
 });

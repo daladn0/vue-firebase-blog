@@ -4,8 +4,10 @@ import store from '@/store'
 import firebase from '@/config/firebase'
 
 import { clickOutside } from '@/directives'
+import { focus } from '@/directives'
 import App from '@/App.vue'
-import Spinner from '@/views/components/base/Spinner.vue'
+import Spinner from '@views/components/base/Spinner.vue'
+import FieldInput from '@views/components/base/FieldInput.vue'
 import '@/assets/tailwind.css'
 
 // svg include
@@ -17,8 +19,10 @@ requireAll(require.context('@/assets/svg', true, /\.svg$/));
 
 const app = createApp(App)
 
-app.component('Spinner', Spinner)
 app.directive('click-outside', clickOutside)
+app.directive('focus', focus)
+app.component('Spinner', Spinner)
+app.component('FieldInput', FieldInput)
 app.use(router)
 app.use(store)
 app.mount('#app')

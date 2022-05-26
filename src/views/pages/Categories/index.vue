@@ -16,7 +16,8 @@
       </button>
     </div>
   </Modal>
-  <div class="space-y-8">
+  <Spinner v-if="isLoading" class="mx-auto mt-4" />
+  <div v-else class="space-y-8">
     <div class="grid gap-8 grid-cols-2">
       <Form
         @submit="createNewCategory"
@@ -48,8 +49,7 @@
           type="submit"
           class="w-full py-2.5 font-semibold text-white outline-none bg-blue-700 hover:bg-blue-800 ring-blue-700 focus:ring-2 rounded-lg px-5 text-center"
         >
-          <Spinner class="block mx-auto" v-if="isDataLoading" />
-          <span v-else>Create category</span>
+          <span>Create category</span>
         </button>
       </Form>
 
@@ -70,8 +70,8 @@
             <option value="" disabled selected>Choose category</option>
             <option
               v-for="category in categories"
-              :key="category.title"
-              :value="category"
+              :key="category.id"
+              :value="category.id"
             >
               {{ category.title }}
             </option>
@@ -97,7 +97,7 @@
               type="submit"
               class="w-full py-2.5 font-semibold text-white outline-none bg-blue-700 hover:bg-blue-800 ring-blue-700 focus:ring-2 rounded-lg px-5 text-center"
             >
-              <Spinner class="block mx-auto" v-if="isDataLoading" />
+              <Spinner class="block mx-auto" v-if="isLoading" />
               <span v-else>Update title</span>
             </button>
             <button
@@ -131,12 +131,12 @@
 <script>
 import { markRaw } from "vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import { collection, query, onSnapshot, getFirestore } from "firebase/firestore";
 import { Form, Field } from "vee-validate";
 import { string, required, object, test } from "yup";
 import { getFieldClasses } from "@/helpers";
 import PostsList from "@views/pages/Categories/components/PostsList.vue";
-import Modal from '@views/components/Modal.vue' 
+import Modal from '@views/components/common/Modal.vue' 
+import { collection, query, onSnapshot, getFirestore, orderBy } from "firebase/firestore";
 
 export default {
   name: "Categories",
@@ -148,6 +148,8 @@ export default {
   },
   data() {
     return {
+      categories: [],
+      isLoading: false,
       showModal: false,
       newCategoryTitle: "",
       selectedCategory: "",
@@ -186,37 +188,45 @@ export default {
       ),
     };
   },
-  computed: {
-    ...mapGetters("auth", ["user", "isDataLoading", "isLoggedIn", "error"]),
-    ...mapGetters("categories", ["categories"]),
-  },
   methods: {
     ...mapActions("categories", ["createCategory", "updateCategory", "removeCategory"]),
     ...mapMutations("categories", ["setCategories"]),
     async createNewCategory() {
+      this.isLoading = true
       await this.createCategory({ title: this.newCategoryTitle });
+      this.isLoading = false
     },
     async updateCategoryTitle() {
+      this.isLoading = true
       await this.updateCategory({
-        ...this.selectedCategory,
+        ...this.categories.find(category => category.id === this.selectedCategory),
         title: this.updatedCategoryTitle,
-      });
+      })
+      this.isLoading = false
     },
     async deleteCategory() {
-      await this.removeCategory({ id: this.selectedCategory.id })
+      this.isLoading = true
+      await this.removeCategory({ id: this.selectedCategory })
+      this.selectedCategory = ''
+      this.isLoading = false
     },
     getFieldClasses,
   },
   created() {
-    // Receive new categories list from firebase whenever it updates
-    const q = query(collection(getFirestore(), "categories"));
-    onSnapshot(q, (querySnapshot) => {
+    this.isLoading = true
+    const categoriesQuery = query(collection(getFirestore(), "categories"));
+    onSnapshot(categoriesQuery, (querySnapshot) => {
       const categories = [];
+      
       querySnapshot.forEach((doc) => {
-        categories.push({ ...doc.data(), id: doc.id });
+          categories.push({...doc.data(), id: doc.id})
       });
-      this.setCategories(categories);
-    });
-  },
+
+      this.categories = categories
+      this.setCategories(categories)
+
+      this.isLoading = false
+    })
+  }
 };
 </script>

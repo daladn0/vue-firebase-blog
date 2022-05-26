@@ -139,7 +139,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("auth", ["user", "isDataLoading", "isLoggedIn", "error"]),
+    ...mapGetters("auth", ["isDataLoading","error"]),
     validationClasses() {
       return (error, touched) => {
         return error && touched

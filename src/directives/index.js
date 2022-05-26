@@ -21,3 +21,7 @@ export const clickOutside = {
     document.removeEventListener("click", el.clickOutsideEvent);
   },
 };
+
+export const focus = {
+  mounted: (el) => el.focus()
+}

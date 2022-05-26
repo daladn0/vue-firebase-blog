@@ -1,9 +1,10 @@
 <template>
   <header class="w-full h-12 px-5 bg-white flex items-center justify-between">
-    <router-link to="/" class="text-gray-700 font-semibold text-lg"
-      >Daladn0's Blog</router-link
-    >
-    <div class="relative h-full">
+    <router-link to="/" class="text-gray-700 font-semibold text-lg">
+      Daladn0's Blog
+    </router-link>
+    <Spinner v-if="isDataLoading" />
+    <div v-else class="relative h-full">
       <router-link
         to="/login"
         v-if="!isLoggedIn"
@@ -29,19 +30,19 @@
       </button>
 
       <Dropdown
-        @close='collapseDropdown'
+        @close="collapseDropdown"
         :user="user"
         trigger="triggerDropdown"
         v-click-outside="collapseDropdown"
-        v-if="showDropDown"
+        v-if="showDropDown && isLoggedIn"
         class="absolute right-0 top-full mt-4"
       />
     </div>
   </header>
 </template>
 <script>
-import Dropdown from "@views/components/Dropdown.vue";
-import { mapState } from "vuex";
+import Dropdown from "@views/components/common/Dropdown.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "Navbar",
   components: {
@@ -53,7 +54,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("auth", ["user", "isLoggedIn", "isDataLoading"]),
+    ...mapGetters("auth", ["user", "isLoggedIn", "isDataLoading"]),
   },
   methods: {
     collapseDropdown() {

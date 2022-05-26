@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth'
-import { getFirestore , collection, doc, addDoc,  updateDoc, deleteDoc} from "firebase/firestore";
+import { getFirestore , collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query } from "firebase/firestore";
 
 export default {
     namespaced: true,
@@ -17,42 +17,41 @@ export default {
     actions: {
         async createCategory({ commit }, { title }) {
             try {
-                commit('auth/setError', null, { root: true })
-                commit('auth/setIsDataLoading', true, { root: true })
-
                 const auth = getAuth()
                 const db = getFirestore()
-                await addDoc(collection(db, "categories"), {
+                const result = await addDoc(collection(db, "categories"), {
                     title,
                     creator_id: auth.currentUser.uid
                 });
             } catch (e) {
                 console.log(e)
-                commit('auth/setError', e.code, { root: true })
-            } finally {
-                commit('auth/setIsDataLoading', false, { root: true })
-            }
+            } 
         },
         async updateCategory({commit}, {id, ...updatedCategory}) {
             try {
-                commit('auth/setError', null, { root: true })
-                commit('auth/setIsDataLoading', true, { root: true })
                 await updateDoc(doc(getFirestore(), 'categories', id), updatedCategory)
             } catch(e) {
                 console.log(e)
-            } finally {
-                commit('auth/setIsDataLoading', false, { root: true })
             }
         },
         async removeCategory({commit}, {id}) {
             try {
-                commit('auth/setError', null, { root: true })
-                commit('auth/setIsDataLoading', true, { root: true })
                 await deleteDoc(doc(getFirestore(), "categories", id));
             } catch(e) {
                 console.log(e)
-            } finally {
-                commit('auth/setIsDataLoading', false, { root: true })
+            }
+        },
+        async fetchCategories({commit}) {
+            try {
+                const db = getFirestore()
+                const categoriesSnapshot = await getDocs(query(collection(db, "categories")))
+                const receivedCategories = []
+                categoriesSnapshot.forEach((doc) => {
+                    receivedCategories.push({id: doc.id, ...doc.data()})
+                });
+                commit('setCategories', receivedCategories)
+            } catch(e) {
+                console.log(e)
             }
         }
     }
