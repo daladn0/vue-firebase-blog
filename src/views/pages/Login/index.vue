@@ -32,7 +32,7 @@
               :type="type"
               @input="handleChange($event, meta.touched)"
               :placeholder="placeholder"
-              class="bg-gray-50 border outline-none focus:ring-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              class="bg-gray-50 border outline-none focus:ring-2 border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
               :class="[validationClasses(errors[0], meta.touched)]"
             />
             <span class="text-red-500 text-sm" v-if="errors[0] && meta.touched">{{

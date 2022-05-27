@@ -33,7 +33,8 @@
         </button>
 
         <div class="w-20 h-full border cursor-pointer relative" v-else>
-          <img class="w-full h-full object-contain" :src="preview" alt="" />
+          <img class="w-full h-full object-contain" v-if="invalidImg" src="@/assets/images/fallback.png" alt="" />
+          <img class="w-full h-full object-contain" v-else @error="invalidImg = true" :src="preview" alt="" />
 
           <button
             @click.stop="removePostPhoto"
@@ -94,6 +95,7 @@ export default {
       description: "",
       titleValidation: string().required('Description field is required'),
       isDataLoading: false,
+      invalidImg: false
     };
   },
   methods: {
