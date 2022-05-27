@@ -63,22 +63,15 @@
           <label for="new-category" class="text-2xl text-gray-900 font-medium block mb-2">
             Select category
           </label>
-          <select
-            class="bg-gray-50 border outline-none focus:ring-2 border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+          <Selection 
             v-model="selectedCategory"
-          >
-            <option value="" disabled selected>Choose category</option>
-            <option
-              v-for="category in categories"
-              :key="category.id"
-              :value="category.id"
-            >
-              {{ category.title }}
-            </option>
-          </select>
+            disabledOption="Choose category"
+            :options="categories"
+            value-field="id"
+          />
         </div>
 
-        <div v-show="selectedCategory" class="space-y-4">
+        <div v-show="isCategorySelected" class="space-y-4">
           <Field name="selectedCategoryTitle" v-slot="{ field, errors, meta }">
             <input
               v-bind="field"
@@ -112,7 +105,7 @@
       </Form>
     </div>
 
-    <div class="relative shadow-md" v-if="selectedCategory">
+    <div class="relative shadow-md" v-if="isCategorySelected">
       <div class="flex items-center absolute -left-4 top-0 transform -translate-x-full">
         <p class="block mr-4">Amount:</p>
         <select
@@ -152,7 +145,7 @@ export default {
       isLoading: false,
       showModal: false,
       newCategoryTitle: "",
-      selectedCategory: "",
+      selectedCategory: "disabled-option",
       updatedCategoryTitle: "",
       addCategoryValidationSchema: markRaw(
         object({
@@ -181,12 +174,17 @@ export default {
             .test(
               "same-value",
               "Title is the same as before",
-              (value) => value !== this.selectedCategory.title
+              (value) => value !== this.categories.find(category => category.id === this.selectedCategory )?.title
             )
             .required("New category title can't be empty!"),
         })
       ),
     };
+  },
+  computed: {
+    isCategorySelected(){ 
+      return this.selectedCategory && this.selectedCategory !== 'disabled-option' 
+    }
   },
   methods: {
     ...mapActions("categories", ["createCategory", "updateCategory", "removeCategory"]),
@@ -207,7 +205,7 @@ export default {
     async deleteCategory() {
       this.isLoading = true
       await this.removeCategory({ id: this.selectedCategory })
-      this.selectedCategory = ''
+      this.selectedCategory = 'disabled-option'
       this.isLoading = false
     },
     getFieldClasses,

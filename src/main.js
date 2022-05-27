@@ -8,6 +8,7 @@ import { focus } from '@/directives'
 import App from '@/App.vue'
 import Spinner from '@views/components/base/Spinner.vue'
 import FieldInput from '@views/components/base/FieldInput.vue'
+import Selection from '@views/components/base/Selection.vue'
 import '@/assets/tailwind.css'
 
 // svg include
@@ -23,6 +24,7 @@ app.directive('click-outside', clickOutside)
 app.directive('focus', focus)
 app.component('Spinner', Spinner)
 app.component('FieldInput', FieldInput)
+app.component('Selection', Selection)
 app.use(router)
 app.use(store)
 app.mount('#app')
