@@ -11,6 +11,11 @@ module.exports = {
       },
       minWidth: {
         '250px': '250px',
+      },
+      colors: {
+        gray: {
+          350: '#C8CBD1'
+        }
       }
     },
   },

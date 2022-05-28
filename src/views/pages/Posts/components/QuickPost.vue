@@ -8,12 +8,12 @@
           placeholder="Image URL"
           v-model="imageURL"
         />
-        <button
+        <MainButton
           type="submit"
-          class="ml-2 px-2 font-semibold text-white bg-blue-500 rounded transition-all hover:bg-blue-600"
+          class="ml-4"
         >
           submit
-        </button>
+        </MainButton>
       </form>
     </Modal>
     <Form

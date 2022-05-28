@@ -20,17 +20,13 @@
 
     <div class="w-full h-px bg-gray-200" />
 
-    <router-link @click="$emit('close')" to='/' class="block w-full text-left transition-all hover:bg-gray-100 p-2">
-      Home
-    </router-link>
-    <button type="button" class="w-full text-left transition-all hover:bg-gray-100 p-2">
-      Profile
-    </button>
-    <router-link @click="$emit('close')" to='/categories' class="block w-full text-left transition-all hover:bg-gray-100 p-2">
-      Categories
-    </router-link>
-    <router-link @click="$emit('close')" to="/create-post" type="button" class="block w-full text-left transition-all hover:bg-gray-100 p-2">
-      Create Post
+    <router-link 
+      v-for="link in links" 
+      :key="link.path" 
+      :to="link.path" @click="$emit('close')" 
+      class="block w-full text-left transition-all hover:bg-gray-100 p-2"
+    >
+      {{link.title}}
     </router-link>
 
     <div class="w-full h-px bg-gray-200" />
@@ -53,5 +49,15 @@ export default {
       this.$router.push('/login')
     },
   },
+  data() {
+    return {
+      links: [
+        { path: '/', title: 'Home' },
+        { path: '/profile', title: 'Profile' },
+        { path: '/categories', title: 'Categories' },
+        { path: '/create-post', title: 'Create Post' },
+      ]
+    }
+  }
 };
 </script>

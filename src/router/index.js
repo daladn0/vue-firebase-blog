@@ -28,6 +28,14 @@ const routes = [
     }
   },
   {
+    path: "/profile",
+    name: "Profile",
+    component: () => import('@views/pages/Profile/index.vue'),
+    meta: {
+      layout: 'MainLayout'
+    }
+  },
+  {
     path: "/login",
     name: "Login",
     component: () => import('@views/pages/Login/index.vue'),
