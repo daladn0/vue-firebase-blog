@@ -1,5 +1,5 @@
-import { getAuth, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { getFirestore, collection, addDoc, getDocs, query } from 'firebase/firestore'
+import { getAuth, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, updatePassword, sendPasswordResetEmail } from "firebase/auth";
+import { getFirestore, collection, addDoc, getDocs, query, updateDoc, doc } from 'firebase/firestore'
 
 export default {
     namespaced: true,
@@ -64,17 +64,22 @@ export default {
                 commit('setIsDataLoading', true)
                 await createUserWithEmailAndPassword(getAuth(), email, password)
 
+                const { currentUser } = getAuth()
+
                 await updateProfile(getAuth().currentUser, {
                     displayName: name,
-                    photoURL: `https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png`
+                    photoURL: `https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png`,
                 })
 
-                const { currentUser } = getAuth()
-                await addDoc(collection(getFirestore(), "users"), {
+                const res = await addDoc(collection(getFirestore(), "users"), {
                     uid: currentUser.uid,
                     email: currentUser.email,
                     displayName: currentUser.displayName,
                     photoURL: currentUser.photoURL
+                })
+
+                await updateDoc(doc(getFirestore(), "users", res.id), {
+                    documentID: res.id
                 })
 
                 return true
@@ -105,11 +110,59 @@ export default {
                 const usersSnapshot = await getDocs(query(collection(db, "users")))
                 const receivedUsers = []
                 usersSnapshot.forEach((doc) => {
-                    receivedUsers.push({...doc.data()})
+                    receivedUsers.push({ ...doc.data() })
                 });
                 commit('setUsers', receivedUsers)
-            } catch(e) {
+            } catch (e) {
                 console.log(e)
+            }
+        },
+        async updateUserName({ commit, state, dispatch }, updatedUserName) {
+            try {
+                commit('setIsDataLoading', true)
+
+                await dispatch('fetchUsers')
+                const currentUser = state.users.find(user => user.uid === getAuth().currentUser.uid)
+
+                await updateProfile(getAuth().currentUser, { displayName: updatedUserName })
+                await updateDoc(doc(getFirestore(), 'users', currentUser.documentID), {
+                    displayName: updatedUserName
+                })
+
+            } catch (e) {
+                console.log(e)
+            } finally {
+                commit('setIsDataLoading', false)
+            }
+        },
+        async updateUserImage({ commit, state, dispatch }, updatedUserImageURL) {
+            try {
+                commit('setIsDataLoading', true)
+
+                await dispatch('fetchUsers')
+                const currentUser = state.users.find(user => user.uid === getAuth().currentUser.uid)
+
+                await updateProfile(getAuth().currentUser, { photoURL: updatedUserImageURL })
+                await updateDoc(doc(getFirestore(), 'users', currentUser.documentID), {
+                    photoURL: updatedUserImageURL
+                })
+
+            } catch (e) {
+                console.log(e)
+            } finally {
+                commit('setIsDataLoading', false)
+            }
+        },
+        async sendPasswordResetLink({ commit, state }) {
+            try {
+                commit('setIsDataLoading', true)
+
+                const auth = getAuth();
+                await sendPasswordResetEmail(auth, state.user.email)
+            } catch (e) {
+                console.log(e)
+            } finally {
+                commit('setIsDataLoading', false)
             }
         }
     }

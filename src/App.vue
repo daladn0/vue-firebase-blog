@@ -1,5 +1,8 @@
 <template>
   <div>
+    <transition name="toast">
+      <Toast v-if="visible" :message="message" :status="status" class="absolute left-4 top-16 z-20"/>
+    </transition>
     <component :is="layout">
       <router-view />
     </component>
@@ -8,13 +11,18 @@
 <script>
 import MainLayout from "@views/layouts/MainLayout.vue";
 import EmptyLayout from "@views/layouts/EmptyLayout.vue";
+import Toast from '@views/components/common/Toast.vue';
+import { mapGetters } from "vuex";
+
 export default {
   name: "App",
   components: {
     MainLayout,
     EmptyLayout,
+    Toast,
   },
   computed: {
+    ...mapGetters('toast', ['message', 'visible', 'status']),
     layout() {
       const route = this.$route.meta;
       return route.layout ? route.layout : "EmptyLayout";
@@ -34,5 +42,16 @@ select {
   -moz-appearance: none;
   appearance: none;
   background-position-x: 95%;
+}
+
+.toast-enter-active,
+.toast-leave-active {
+  transition: all .1s linear;
+}
+
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(150%);
 }
 </style>
