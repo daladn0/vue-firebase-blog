@@ -33,8 +33,7 @@
         </button>
 
         <div class="w-20 h-full border cursor-pointer relative" v-else>
-          <img class="w-full h-full object-contain" v-if="invalidImg" src="@/assets/images/fallback.png" alt="" />
-          <img class="w-full h-full object-contain" v-else @error="invalidImg = true" :src="preview" alt="" />
+          <img class="w-full h-full object-contain" @error="checkImageValidation" :src="preview" alt="" />
 
           <button
             @click.stop="removePostPhoto"
@@ -100,6 +99,7 @@ export default {
   },
   methods: {
     ...mapActions('posts', ['createPost']),
+    ...mapActions('toast', ['SHOW_ERROR']),
     async createQuickPost() {
       this.isDataLoading = true
       const newPost = {
@@ -127,6 +127,12 @@ export default {
       this.showModal = false;
       this.imageURL = "";
     },
+    checkImageValidation() {
+      if ( !this.preview ) return
+      this.SHOW_ERROR('Invalid image url!')
+      this.preview = ''
+      this.imageURL = ''
+    }
   },
 };
 </script>
