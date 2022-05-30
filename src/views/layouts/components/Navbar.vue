@@ -9,7 +9,7 @@
         to="/login"
         v-if="!isLoggedIn"
         type="button"
-        class="block text-white my-1.5 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:outline-none dark:focus:ring-blue-800 font-semibold rounded-lg text-lg px-5 py-1 text-center"
+        class="block text-white my-1.5 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:outline-none font-semibold rounded-lg text-lg px-5 py-1 text-center"
       >
         Login
       </router-link>
@@ -35,7 +35,7 @@
         trigger="triggerDropdown"
         v-click-outside="collapseDropdown"
         v-if="showDropDown && isLoggedIn"
-        class="absolute right-0 top-full mt-4"
+        class="absolute right-0 top-full mt-4 z-[11]"
       />
     </div>
   </header>

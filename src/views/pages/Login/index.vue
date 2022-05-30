@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-lg w-full">
     <div
-      class="bg-white shadow-md border border-gray-200 rounded-lg w-full p-4 sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700"
+      class="bg-white shadow-md border border-gray-200 rounded-lg w-full p-4 sm:p-6 lg:p-8 "
     >
       <Form
         @submit="submit"
@@ -9,7 +9,7 @@
         class="space-y-8"
         :validation-schema="validationSchema"
       >
-        <h3 class="text-2xl text-center font-medium text-gray-900 dark:text-white">
+        <h3 class="text-2xl text-center font-medium text-gray-900 ">
           Log in
         </h3>
         <Field
@@ -21,7 +21,7 @@
           <div>
             <label
               :for="name"
-              class="text-sm text-gray-900 font-medium block mb-2 dark:text-gray-300"
+              class="text-sm text-gray-900 font-medium block mb-2 "
             >
               {{ label }}
             </label>
@@ -43,7 +43,7 @@
 
         <button
           type="submit"
-          class="w-full h-12 font-semibold text-white outline-none bg-blue-700 hover:bg-blue-800 ring-blue-700 focus:ring-2 rounded-lg px-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          class="w-full h-12 font-semibold text-white outline-none bg-blue-700 hover:bg-blue-800 ring-blue-700 focus:ring-2 rounded-lg px-5 text-center "
         >
           <Spinner class="block mx-auto" v-if="isDataLoading" />
           <span v-else>Login to yout account</span>
@@ -51,11 +51,11 @@
         <p v-if="error" class="text-red-500 text-sm text-center">
           {{ errors[error] || "Something went wrong" }}
         </p>
-        <div class="text-sm text-center font-medium text-gray-500 dark:text-gray-300">
+        <div class="text-sm text-center font-medium text-gray-500 ">
           Not registered?
           <router-link
             to="/signup"
-            class="text-blue-700 hover:underline dark:text-blue-500"
+            class="text-blue-700 hover:underline "
           >
             Create account
           </router-link>

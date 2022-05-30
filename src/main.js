@@ -4,6 +4,8 @@
 // [] fix sign up page redirect ( there is a noticable gap between loading ending and redirecting to home page )
 // [] helper methods for date formating
 // [] post page doesn't show
+// [] focus first field on login/signup pagese when rendered
+// [] add 'scroll to top' button
 
 import { createApp } from 'vue'
 import router from '@/router'

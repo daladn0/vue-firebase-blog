@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth'
-import { getFirestore , collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query, where, getDoc } from "firebase/firestore";
+import { getFirestore , collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query, where, getDoc, serverTimestamp, orderBy, limit } from "firebase/firestore";
 
 export default {
     namespaced: true,
@@ -15,13 +15,15 @@ export default {
         }
     },
     actions: {
-        async createCategory({ commit }, { title }) {
+        async createCategory({ commit }, { title, photoURL }) {
             try {
                 const auth = getAuth()
                 const db = getFirestore()
                 const result = await addDoc(collection(db, "categories"), {
                     title,
-                    creator_id: auth.currentUser.uid
+                    photoURL,
+                    creator_id: auth.currentUser.uid,
+                    timestamp: serverTimestamp(),
                 });
             } catch (e) {
                 console.log(e)
@@ -54,13 +56,30 @@ export default {
                 console.log(e)
             }
         },
-        async fetchCategoryByID(ctx, id) {
+        async fetchCategoryByID({commit}, id) {
             try {
                 const category = await getDoc( doc( getFirestore(), 'categories', id ) )
 
                 if ( category.exists() ) return category.data()
 
                 return null
+            } catch(e) {
+                console.log(e)
+                return null
+            }
+        },
+        async fetchLimitedCategories({commit}, {limit:countLimit = 5, order = 'timestamp'}) {
+            try {
+                const q = query(collection( getFirestore(), 'categories' ), orderBy(order, "desc"), limit(countLimit))
+                const docSnap = await getDocs(q)
+                const categories = []
+                docSnap.forEach( doc => {
+                    if ( doc.exists() ) {
+                        categories.push(doc.data())
+                    }
+                } )
+                return categories
+
             } catch(e) {
                 console.log(e)
                 return null

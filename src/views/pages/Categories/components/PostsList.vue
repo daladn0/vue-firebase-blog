@@ -1,5 +1,5 @@
 <template>
-    <table class="table-fixed w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <table class="table-fixed w-full text-sm text-left text-gray-500 ">
         <thead
           class="text-xs text-gray-700 uppercase bg-gray-100 border-b-2"
         >
@@ -12,9 +12,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="i in 50" :key="i" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <tr v-for="i in 50" :key="i" class="bg-white border-b ">
             <th
-              class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+              class="px-6 py-4 font-medium text-gray-900 "
             >
                 <p class="block truncate">Lorem ipsum dolor set</p>
             </th>
@@ -28,7 +28,7 @@
             <td class="px-6 py-4 text-right">
               <router-link
                 to="/"
-                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                class="font-medium text-blue-600 hover:underline"
               >
                 Open
               </router-link>

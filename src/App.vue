@@ -3,7 +3,7 @@
     <transition name="toast">
       <Toast v-if="visible" :message="message" :status="status" class="fixed left-4 bottom-4 z-20"/>
     </transition>
-    <component :is="layout">
+    <component :is="layout" :key="$route.path">
       <router-view />
     </component>
   </div>

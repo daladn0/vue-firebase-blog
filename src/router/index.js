@@ -8,7 +8,8 @@ const routes = [
     name: "PostsList",
     component: PostsList,
     meta: {
-      layout: 'MainLayout'
+      layout: 'MainLayout',
+      sidebar: true,
     }
   },
   {
@@ -32,7 +33,7 @@ const routes = [
     name: "Profile",
     component: () => import('@views/pages/Profile/index.vue'),
     meta: {
-      layout: 'MainLayout'
+      layout: 'MainLayout',
     }
   },
   {
