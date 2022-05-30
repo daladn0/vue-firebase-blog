@@ -7,6 +7,7 @@
           class="w-96 py-2"
           placeholder="Image URL"
           v-model="imageURL"
+          @keyup.esc="showModal = false; imageURL = ''"
         />
         <MainButton
           type="submit"

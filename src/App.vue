@@ -1,7 +1,7 @@
 <template>
   <div>
     <transition name="toast">
-      <Toast v-if="visible" :message="message" :status="status" class="absolute left-4 top-16 z-20"/>
+      <Toast v-if="visible" :message="message" :status="status" class="fixed left-4 bottom-4 z-20"/>
     </transition>
     <component :is="layout">
       <router-view />
@@ -52,6 +52,6 @@ select {
 .toast-enter-from,
 .toast-leave-to {
   opacity: 0;
-  transform: translateY(150%);
+  transform: translateY(-150%);
 }
 </style>

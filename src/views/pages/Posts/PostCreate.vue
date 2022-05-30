@@ -44,14 +44,26 @@
             v-model="imageURL" 
             class="w-full py-2.5" 
             placeholder="example.com/picture.png"
-            @input="postImage = false; invalidURL = false"
           />
           <MainButton type="button" @click="postImage = imageURL" >
             Submit
           </MainButton>
         </div>
-        <img v-if="invalidURL" src="@/assets/images/fallback.png" class="w-full h-full mt-8 aspect-video object-cover" alt="" />
-        <img v-else-if="postImage" class="w-full h-full mt-8 aspect-video object-cover" @error="invalidURL = true" :src="postImage" alt="">
+        <div v-if="showImage" class="relative">
+          <img class="w-full h-full mt-8 aspect-video object-cover" :src="postImage" alt="" />
+          <button @click="removeImage" class="absolute top-1 right-1 transform -translate-y-1/2 translate-x-1/2 p-1 rounded-full bg-red-500 transition-all hover:bg-red-600 text-white">
+            <svg viewBox="0 0 20 20" class="w-5 h-5 text-white">
+              <use xlink:href="sprite.svg#close" />
+            </svg>
+          </button>
+        </div>
+        <img 
+          @load="showImage = true"
+          @error="checkImageValidation"
+          :src="postImage" 
+          class="absolute opacity-0 invisible pointer-events-none z-[-1] w-0 h-0" 
+          alt=""
+        />
       </div>
       <MainButton type="submit">
         Create Post
@@ -77,8 +89,8 @@ export default {
       postDescription: '',
       selectedCategory: 'disabled-option',
       postImage: '',
-      invalidURL: false,
       imageURL: '',
+      showImage: false,
       descriptionValidation: string().required("Post description can't be empty!")
     }
   },
@@ -88,6 +100,7 @@ export default {
   methods: {
     ...mapActions('categories', ['fetchCategories']),
     ...mapActions('posts', ['createPost']),
+    ...mapActions('toast', ['SHOW_ERROR']),
     setImage() {
       this.invalidURL = false
       this.postImage = this.imageURL
@@ -103,7 +116,6 @@ export default {
         photoURL: this.postImage,
         category_id: currentCategory
       })
-
       this.postImage = ''
       this.imageURL = ''
       this.postTitle = ''
@@ -114,6 +126,18 @@ export default {
 
       this.isLoading = false
     },
+    checkImageValidation() {
+      if ( !this.postImage ) return
+      this.postImage = ''
+      this.imageURL = ''
+      this.showImage = false
+      this.SHOW_ERROR('Invalid image url!')
+    },
+    removeImage() {
+      this.postImage = ''
+      this.imageURL = ''
+      this.showImage = false
+    }
   },
   async created() {
     this.isLoading = true

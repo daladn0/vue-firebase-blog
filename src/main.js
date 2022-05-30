@@ -2,6 +2,8 @@
 // [] implement helper for invalid fields & use them on every page where needed
 // [] fix loading spinner on sign up page ( looks like there are two spinners ) 
 // [] fix sign up page redirect ( there is a noticable gap between loading ending and redirecting to home page )
+// [] helper methods for date formating
+// [] post page doesn't show
 
 import { createApp } from 'vue'
 import router from '@/router'

@@ -17,23 +17,23 @@
       </button>
     </div>
 
-    <router-link to="/" v-if="post.photoURL" class="w-fit"> <!-- image -->
+    <router-link :to="`/post/${post.id}`" v-if="post.photoURL" class="w-fit"> <!-- image -->
       <img v-if="invalidURL" class="w-full h-full object-cover" src="@/assets/images/fallback.png" alt="">
       <img v-else class="w-full aspect-video object-cover" @error="invalidURL = true" :src="post.photoURL" alt="" />
     </router-link>
 
     <div class="p-5 pb-2.5"> <!-- content -->
-      <a href="#">
+      <router-link :to="`/post/${post.id}`" >
         <h5 v-if="post.title" class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
           {{post.title}}
         </h5>
-      </a>
+      </router-link>
       <p v-if="post.description" class="mb-3 font-normal text-gray-700 line-clamp_3 block">
         {{post.description}}
       </p>
       <div class="flex items-center justify-between">
-        <router-link
-          to="/"
+        <router-link 
+          :to="`/post/${post.id}`" 
           class="block w-fit text-blue-600 rounded-lg px-2 py-1 transition-all hover:bg-blue-100 -ml-2"
         >
           Read more
@@ -43,13 +43,14 @@
             <router-link to="/" class="hover:underline underline-offset-2">{{postCategory}}</router-link>
             <div class="w-1 h-1 mx-2 rounded-full bg-gray-400"/>
           </template>
-          <p>{{postDate || ''}}</p>
+          <p class="text-sm">{{formatDate(post.timestamp?.seconds) || ''}}</p>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { formatDate } from '@/helpers'
 export default {
   name: 'PostItem',
   props: {
@@ -71,15 +72,13 @@ export default {
       invalidURL: false,
     }
   },
+  methods: {
+    formatDate
+  }, 
   computed: {
     postCategory() {
       if ( !this.post.category_id ) return ''
       return this.categories.find( category => category.id === this.post.category_id || '' )?.title
-    },
-    postDate() {
-      if ( !this.post.timestamp ) return ''
-      const date = new Date(this.post.timestamp.seconds * 1000)
-      return `${date.getFullYear()} ${date.getMonth() + 1} ${date.getDay()} ${date.getHours()}:${date.getMinutes()}`
     },
     postAuthor() {
       return this.users.find( user => this.post.creator_id === user.uid ) || null

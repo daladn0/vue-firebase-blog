@@ -43,10 +43,12 @@ export default {
   props: ['user'],
   methods: {
     ...mapActions('auth', ['logout']),
+    ...mapActions('toast', ['SHOW_SUCCESS']),
     async signOut() {
       await this.logout();
       this.$emit('close')
       this.$router.push('/login')
+      this.SHOW_SUCCESS('You\'ve been logged out!')
     },
   },
   data() {

@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth'
-import { getFirestore , collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query } from "firebase/firestore";
+import { getFirestore , collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query, where, getDoc } from "firebase/firestore";
 
 export default {
     namespaced: true,
@@ -52,6 +52,18 @@ export default {
                 commit('setCategories', receivedCategories)
             } catch(e) {
                 console.log(e)
+            }
+        },
+        async fetchCategoryByID(ctx, id) {
+            try {
+                const category = await getDoc( doc( getFirestore(), 'categories', id ) )
+
+                if ( category.exists() ) return category.data()
+
+                return null
+            } catch(e) {
+                console.log(e)
+                return null
             }
         }
     }

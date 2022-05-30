@@ -36,6 +36,14 @@ const routes = [
     }
   },
   {
+    path: "/post/:id",
+    name: "Post",
+    component: () => import('@views/pages/Posts/SinglePost.vue'),
+    meta: {
+      layout: 'MainLayout'
+    }
+  },
+  {
     path: "/login",
     name: "Login",
     component: () => import('@views/pages/Login/index.vue'),

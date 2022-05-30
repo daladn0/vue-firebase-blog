@@ -1,5 +1,5 @@
 import { getAuth, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, updatePassword, sendPasswordResetEmail } from "firebase/auth";
-import { getFirestore, collection, addDoc, getDocs, query, updateDoc, doc } from 'firebase/firestore'
+import { getFirestore, collection, addDoc, getDocs, query, updateDoc, doc, getDoc, where } from 'firebase/firestore'
 
 export default {
     namespaced: true,
@@ -163,6 +163,20 @@ export default {
                 console.log(e)
             } finally {
                 commit('setIsDataLoading', false)
+            }
+        },
+        async fetchUserByID(ctx, id) {
+            try {
+                const q = query(collection(getFirestore(), "users"), where("uid", "==", id));
+                const querySnapshot = await getDocs(q);
+                let user = null
+                querySnapshot.forEach( item => {
+                    user = item.data()
+                } )
+                return user
+            } catch(e) {
+                console.log(e)
+                return null
             }
         }
     }
