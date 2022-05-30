@@ -33,8 +33,8 @@
         </div>
         </div>
         <button class="p-1.5 rounded-full transition-all hover:bg-gray-100">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+          <svg class="w-5 h-5 text-gray-500">
+            <use xlink:href='/sprite.svg#dots' />
           </svg>
         </button>
       </div>

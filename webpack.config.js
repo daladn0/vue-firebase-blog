@@ -6,14 +6,19 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const path = require("path");
 
 module.exports = {
+  mode:"development",
   entry: {
     main: "./src/main.js",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
+    filename: "[name].[contenthash:8].js",
+    publicPath: '/',
   },
   devServer: {
     historyApiFallback: true, // Fixed ' cannot GET/ ' problem
+    open: true,
+    hot: true,
   },
   module: {
     rules: [
