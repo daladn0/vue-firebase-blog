@@ -57,7 +57,7 @@ export default {
         async fetchSinglePostByID({ commit }, id) {
             try {
                 const snapshot = await getDoc( doc(getFirestore(), 'posts', id) )
-                if (snapshot.exists()) return snapshot.data()
+                if (snapshot.exists()) return {...snapshot.data(), id: snapshot.id}
                 return null
             } catch (e) {
                 console.log(e)
@@ -66,7 +66,7 @@ export default {
         },
         async fetchPostsByCategory({commit}, categoryID) {
             try {
-                const q = query(collection(getFirestore(), "posts"), where("category_id", "==", categoryID));
+                const q = query(collection(getFirestore(), "posts"), where("category_id", "==", categoryID), orderBy("timestamp", "desc"));
                 const querySnapshot = await getDocs(q);
                 let posts = []
                 querySnapshot.forEach( item => {
@@ -82,6 +82,16 @@ export default {
             try {
                 await deleteDoc(doc(getFirestore(), 'posts', postID))
                 return true
+            } catch(e) {
+                console.log(e)
+                return null
+            }
+        },
+        async updatePost({commit}, updatedPost) {
+            try {
+                const washingtonRef = doc(getFirestore(), "posts", updatedPost.id);
+                await updateDoc(washingtonRef, updatedPost)
+                return updatedPost
             } catch(e) {
                 console.log(e)
                 return null

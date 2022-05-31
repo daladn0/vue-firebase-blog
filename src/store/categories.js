@@ -61,7 +61,7 @@ export default {
             try {
                 const category = await getDoc( doc(getFirestore(), "categories", id));
 
-                if ( category.exists() ) return category.data()
+                if ( category.exists() ) return {...category.data(), id: category.id}
 
                 return null
             } catch(e) {

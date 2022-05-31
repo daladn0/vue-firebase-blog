@@ -45,6 +45,7 @@
           
           <PostDropdown
             @remove="deletePost"
+            @update="$router.push(`/update-post/${post.id}`)"
             v-click-outside="() => (showDropDown = false)"
             trigger="openDropdown"
             class="absolute top-full mt-4 -right-2 block"

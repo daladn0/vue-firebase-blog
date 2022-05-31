@@ -24,6 +24,7 @@
 
         <PostDropdown
           @remove='$emit("remove", post.id)'
+          @update='$emit("update", post.id)'
           v-click-outside="() => (showDropDown = false)"
           :trigger="`triggerDropdown${id}`"
           class="absolute top-full mt-4 -right-2 block"

@@ -26,6 +26,7 @@
         :id='i'
         :showControlls="isLoggedIn"
         @remove="deletePost"
+        @update="postID => $router.push(`/update-post/${postID}`)"
       />
     </div>
   </div>

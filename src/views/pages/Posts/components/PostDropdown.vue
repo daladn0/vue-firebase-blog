@@ -1,6 +1,6 @@
 <template>
   <div class="w-[150px] rounded bg-gray-200 shadow text-gray-800">
-    <button type="button" class="group block w-full text-left transition-all p-2" >
+    <button @click="$emit('update')" type="button" class="group block w-full text-left transition-all p-2" >
       Edit post
       <div class="w-5 h-5 bg-gray-200 rounded-tl absolute top-0 right-3.5 tranfrom rotate-45 -translate-y-1/2 -translate-x-px transition-all"/>
     </button>

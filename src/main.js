@@ -6,6 +6,7 @@
 // [] post page doesn't show
 // [] focus first field on login/signup pagese when rendered
 // [] add 'scroll to top' button
+// [] textarea auto resize
 
 import { createApp } from 'vue'
 import router from '@/router'

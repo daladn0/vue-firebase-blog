@@ -1,26 +1,28 @@
 <template>
   <Spinner v-if="isLoading" class="mx-auto mt-4" />
+  <p v-else-if="invalidPost" class="text-gray-700 text-center">Such a post doesn't exist!</p>
   <div v-else class="max-w-xl mx-auto">
     <Form 
-      @submit="createNewPost"
+      @submit="action === 'update' ? editPost() : createNewPost()"
       @invalid-submit="$refs['post-description'].focus()"
       class="space-y-8"
     >
       <div>
         <label for="email" class="block mb-2 font-medium text-gray-900">Post title</label>
         <FieldInput 
-          v-model="postTitle"
+          v-model.lazy="postTitle"
           class="w-full py-2.5" 
           placeholder="Post Title"
         />
       </div>
       <div>
-        <Field :rules="descriptionValidation" name="postDescription" v-slot="{field, errors}" >
+        <Field :value='postDescription' :rules="descriptionValidation" name="postDescription" v-slot="{field, errors}" >
           <label for="email" class="block mb-2 font-medium text-gray-900">Post description</label>
           <textarea
             ref="post-description"
             v-bind="field"
-            v-model.lazy="postDescription"
+            :value='postDescription'
+            @input='postDescription = $event.target.value'
             class="w-full py-2 transition-all px-2 outline-none border border-gray-300 hover:border-gray-400 focus:border-gray-500 rounded-lg resize-none"
             placeholder="Post Description"
           />
@@ -66,14 +68,14 @@
         />
       </div>
       <MainButton type="submit">
-        Create Post
+        {{ action === 'update' ? 'Update post' : 'Create Post' }}
       </MainButton>
     </Form>
   </div>
 </template>
 <script>
 import { Form, Field } from "vee-validate";
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import { string, required } from 'yup'
 
 export default {
@@ -84,23 +86,22 @@ export default {
   },
   data() {
     return {
+      action: 'create',
       isLoading: false,
+      categories: [],
       postTitle: '',
       postDescription: '',
       selectedCategory: 'disabled-option',
       postImage: '',
       imageURL: '',
       showImage: false,
-      descriptionValidation: string().required("Post description can't be empty!")
+      descriptionValidation: string().required("Post description can't be empty!"),
     }
   },
-  computed: {
-    ...mapGetters('categories', ['categories']),
-  },
   methods: {
-    ...mapActions('categories', ['fetchCategories']),
-    ...mapActions('posts', ['createPost']),
-    ...mapActions('toast', ['SHOW_ERROR']),
+    ...mapActions('categories', ['fetchCategories', 'fetchCategoryByID']),
+    ...mapActions('posts', ['createPost', 'fetchSinglePostByID', 'updatePost']),
+    ...mapActions('toast', ['SHOW_ERROR', 'SHOW_SUCCESS']),
     setImage() {
       this.invalidURL = false
       this.postImage = this.imageURL
@@ -126,6 +127,19 @@ export default {
 
       this.isLoading = false
     },
+    async editPost() {
+      this.isLoading = true
+      await this.updatePost({
+        id: this.$route.params.id,
+        title: this.postTitle,
+        description: this.postDescription,
+        category_id: this.selectedCategory,
+        photoURL: this.postImage
+      })
+      this.SHOW_SUCCESS('Pos has been updated')
+      this.$router.push('/')
+      this.isLoading = false
+    },
     checkImageValidation() {
       if ( !this.postImage ) return
       this.postImage = ''
@@ -140,8 +154,39 @@ export default {
     }
   },
   async created() {
+    this.invalidPost = false
     this.isLoading = true
-    await this.fetchCategories()
+    this.categories = await this.fetchCategories()
+    this.action = this.$route.meta.action === 'update' ? 'update' : 'create'
+
+    if ( this.action === 'update' ) {
+      this.categories = [ { id: '', title: 'No category' }, ...this.categories]
+
+      const post = await this.fetchSinglePostByID(this.$route.params.id)
+      
+      if ( !post ) {
+        this.invalidPost = true
+        this.isLoading = false
+        return
+      }
+
+      const {title, description, photoURL, category_id} = post
+
+      if ( category_id ) {
+        const {id} = await this.fetchCategoryByID(category_id)
+        this.selectedCategory = id
+      }
+
+      if ( photoURL ) {
+        this.postImage = photoURL
+        this.showImage = true
+      }
+      
+      this.postTitle = title
+      this.postDescription = description
+      this.imageURL = photoURL
+    }
+
     this.isLoading = false    
   }
 };

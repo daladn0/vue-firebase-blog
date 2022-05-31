@@ -17,7 +17,17 @@ const routes = [
     name: 'CreatePost',
     component: () => import('@/views/pages/Posts/PostCreate.vue'),
     meta: {
-      layout: 'MainLayout'
+      layout: 'MainLayout',
+      action: 'create'
+    }
+  },
+  {
+    path: '/update-post/:id',
+    name: 'Update',
+    component: () => import('@/views/pages/Posts/PostCreate.vue'),
+    meta: {
+      layout: 'MainLayout',
+      action: 'update'
     }
   },
   {
