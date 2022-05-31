@@ -42,8 +42,8 @@
           </li>
         </ul>
 
-        <router-link to="/categories" class="block mx-auto text-center py-2 text-sm text-gray-700">
-          Add new
+        <router-link to="/categories/list" class="block mx-auto text-center py-2 text-sm text-gray-700">
+          Show all
         </router-link>
       </div>
       <p class="text-gray-700 text-sm text-center py-2" v-else>

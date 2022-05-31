@@ -7,6 +7,10 @@
 // [] focus first field on login/signup pagese when rendered
 // [] add 'scroll to top' button
 // [] textarea auto resize
+// [] routes protection
+// [] protect route leaving while updating post
+// [] prompt modal window for removing post
+// [] add search for posts/categories etc
 
 import { createApp } from 'vue'
 import router from '@/router'

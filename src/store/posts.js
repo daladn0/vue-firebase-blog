@@ -40,7 +40,7 @@ export default {
                 console.log(e)
             }
         },
-        async fetchPosts({ commit, rootState }) {
+        async fetchPosts({ commit }) {
             try {
                 const db = getFirestore()
                 const postsSnapshot = await getDocs(query(collection(db, "posts"), orderBy('timestamp')))
@@ -49,6 +49,7 @@ export default {
                     receivedPosts.push({ id: doc.id, ...doc.data() })
                 });
                 commit('setPosts', receivedPosts)
+                return receivedPosts
 
             } catch (e) {
                 console.log(e)

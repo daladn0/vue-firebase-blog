@@ -48,6 +48,10 @@ const routes = [
         meta: {
           sidebar: true
         }
+      },
+      {
+        path: 'list',
+        component: () => import('@views/pages/Categories/CategoriesList.vue'),
       }
     ]
   },
