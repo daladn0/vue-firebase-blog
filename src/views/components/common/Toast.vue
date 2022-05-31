@@ -3,11 +3,11 @@
     class="flex items-center w-fit p-2 rounded-lg shadow"
     :class="{
       'bg-red-500': status === 'error',
-      'bg-green-500': status === 'success'
+      'bg-green-600': status === 'success'
     }"
   >
     <svg class="w-5 h-5 text-white" viewBox="0 0 20 20">
-      <use :xlink:href="`sprite.svg#${icon}`" />
+      <use :xlink:href="`/sprite.svg#${icon}`" />
     </svg>
     <div class="ml-3 text-white font-normal">{{message}}</div>
     <button 
@@ -16,11 +16,11 @@
       class="ml-4 p-1 rounded-full transition-all"
       :class="{
         'hover:bg-red-600': status === 'error',
-        'hover:bg-green-600': status === 'success',
+        'hover:bg-green-700': status === 'success',
       }"
     >
       <svg class="w-5 h-5 text-white" viewBox="0 0 20 20">
-        <use xlink:href="sprite.svg#close" />
+        <use xlink:href="/sprite.svg#close" />
       </svg>
     </button>
   </div>

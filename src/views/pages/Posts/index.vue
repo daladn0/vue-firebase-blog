@@ -5,11 +5,14 @@
     <Spinner v-if="isLoading" class="mx-auto mt-4" />
     <div v-else-if="posts.length > 0" class='space-y-8'>
       <PostItem 
-        v-for="post in [...posts].reverse()" 
+        v-for="(post, i) in [...posts].reverse()" 
         :key="post.id" 
         :post="post"
         :categories="categories"
         :users="users"
+        :id='i'
+        :showControlls="isLoggedIn"
+        @remove='deletePost'
       />
     </div>
     
@@ -41,7 +44,15 @@ export default {
   methods: {
     ...mapActions('auth', ['fetchUsers']),
     ...mapActions('categories', ['fetchCategories']),
-    ...mapMutations('posts', ['setPosts'])
+    ...mapActions('posts', ['removePost']),
+    ...mapActions('toast', ['SHOW_SUCCESS']),
+    ...mapMutations('posts', ['setPosts']),
+    async deletePost(postID) {
+      this.isLoading = true
+      await this.removePost(postID)
+      this.SHOW_SUCCESS('Post has been deleted!')
+      this.isLoading = false
+    }
   },
   async created() {
     this.isLoading = true

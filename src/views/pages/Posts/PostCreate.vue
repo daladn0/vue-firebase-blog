@@ -53,7 +53,7 @@
           <img class="w-full h-full mt-8 aspect-video object-cover" :src="postImage" alt="" />
           <button @click="removeImage" class="absolute top-1 right-1 transform -translate-y-1/2 translate-x-1/2 p-1 rounded-full bg-red-500 transition-all hover:bg-red-600 text-white">
             <svg viewBox="0 0 20 20" class="w-5 h-5 text-white">
-              <use xlink:href="sprite.svg#close" />
+              <use xlink:href="/sprite.svg#close" />
             </svg>
           </button>
         </div>

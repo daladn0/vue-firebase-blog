@@ -15,7 +15,7 @@
       >
         Remove
         <svg class="w-6 h-6 ml-2">
-          <use xlink:href="sprite.svg#tick" />
+          <use xlink:href="/sprite.svg#tick" />
         </svg>
       </button>
       <button
@@ -25,7 +25,7 @@
       >
         Cancel
         <svg class="w-6 h-6 ml-2">
-          <use xlink:href="sprite.svg#close" />
+          <use xlink:href="/sprite.svg#close" />
         </svg>
       </button>
     </div>

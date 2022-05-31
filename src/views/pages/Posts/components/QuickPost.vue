@@ -29,7 +29,7 @@
           class="flex flex-shrink-0 items-center justify-center w-10 h-10 bg-gray-200 rounded-full transition-all hover:bg-gray-300"
         >
           <svg class="w-6 h-6 text-gray-500">
-            <use xlink:href="sprite.svg#photo" />
+            <use xlink:href="/sprite.svg#photo" />
           </svg>
         </button>
 
@@ -42,7 +42,7 @@
             class="p-1 bg-red-500 rounded-full absolute top-1 right-1 transform translate-x-1/2 -translate-y-1/2 transition-all hover:bg-red-600"
           >
             <svg class="w-4 h-4 text-white">
-              <use xlink:href="sprite.svg#close" />
+              <use xlink:href="/sprite.svg#close" />
             </svg>
           </button>
         </div>
@@ -68,7 +68,7 @@
         class="flex flex-shrink-0 ml-auto items-center justify-center w-10 h-10 bg-blue-500 rounded-lg transition-all hover:bg-blue-600"
       >
         <svg class="w-6 h-6 text-white">
-          <use xlink:href="sprite.svg#send" />
+          <use xlink:href="/sprite.svg#send" />
         </svg>
       </button>
     </Form>

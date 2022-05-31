@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, addDoc, serverTimestamp, getDocs, doc, getDoc, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, getDocs, doc, getDoc, orderBy, query, updateDoc, where, deleteDoc } from "firebase/firestore";
 
 export default {
     namespaced: true,
@@ -74,6 +74,15 @@ export default {
                 } )
                 return posts
             } catch(e){
+                console.log(e)
+                return null
+            }
+        },
+        async removePost({commit}, postID) {
+            try {
+                await deleteDoc(doc(getFirestore(), 'posts', postID))
+                return true
+            } catch(e) {
                 console.log(e)
                 return null
             }

@@ -23,11 +23,13 @@ export default {
     },
     actions: {
         SHOW_ERROR({commit}, message) {
+            commit('setVisible', false)
             commit('setStatus', 'error')
             commit('setMessage', message)
             commit('setVisible', true)
         },
         SHOW_SUCCESS({commit}, message) {
+            commit('setVisible', false)
             commit('setStatus', 'success')
             commit('setMessage', message)
             commit('setVisible', true)

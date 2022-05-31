@@ -54,4 +54,8 @@ select {
   opacity: 0;
   transform: translateY(-150%);
 }
+
+.break-word {
+  word-break: break-word;
+}
 </style>

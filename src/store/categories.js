@@ -45,8 +45,8 @@ export default {
         },
         async fetchCategories({commit}) {
             try {
-                const db = getFirestore()
-                const categoriesSnapshot = await getDocs(query(collection(db, "categories")))
+                const q = query(collection( getFirestore(), 'categories' ), orderBy('timestamp'),)
+                const categoriesSnapshot = await getDocs(q)
                 const receivedCategories = []
                 categoriesSnapshot.forEach((doc) => {
                     receivedCategories.push({id: doc.id, ...doc.data()})
@@ -59,7 +59,7 @@ export default {
         },
         async fetchCategoryByID({commit}, id) {
             try {
-                const category = await getDoc( doc( getFirestore(), 'categories', id ) )
+                const category = await getDoc( doc(getFirestore(), "categories", id));
 
                 if ( category.exists() ) return category.data()
 
@@ -71,7 +71,7 @@ export default {
         },
         async fetchCategoryByTitle({commit}, title) {
             try  {
-                const q = query(collection(getFirestore(), "categories"), where("title", "==", title));
+                const q = query(collection(getFirestore(), "categories"), where("title", "==", title), orderBy('timestamp', 'desc'));
                 const querySnapshot = await getDocs(q);
                 let category = null
                 querySnapshot.forEach( item => {

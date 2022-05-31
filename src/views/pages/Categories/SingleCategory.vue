@@ -18,17 +18,20 @@
         </div>
       </div>
       <PostItem
-        v-for="post in posts"
+        v-for="(post, i) in posts"
         :key="post.id"
         :post="post"
         :users="users"
         :categories="categories"
+        :id='i'
+        :showControlls="isLoggedIn"
+        @remove="deletePost"
       />
     </div>
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import PostItem from "@views/pages/Posts/components/PostItem.vue";
 export default {
   name: "SingleCategory",
@@ -44,10 +47,21 @@ export default {
       users: [],
     };
   },
+  computed: {
+    ...mapGetters('auth', ['isLoggedIn'])
+  }, 
   methods: {
     ...mapActions("categories", ["fetchCategories"]),
-    ...mapActions("posts", ["fetchPostsByCategory"]),
+    ...mapActions("posts", ["fetchPostsByCategory", "removePost"]),
     ...mapActions("auth", ["fetchUsers"]),
+    ...mapActions("toast", ["SHOW_SUCCESS"]),
+    async deletePost(postID) {
+      this.isLoading = true
+      await this.removePost(postID);
+      this.posts = await this.fetchPostsByCategory(this.category.id);
+      this.SHOW_SUCCESS('Post has been deleted')
+      this.isLoading = false
+    }
   },
   async created() {
     this.isLoading = true;
