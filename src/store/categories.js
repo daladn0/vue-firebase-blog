@@ -52,6 +52,7 @@ export default {
                     receivedCategories.push({id: doc.id, ...doc.data()})
                 });
                 commit('setCategories', receivedCategories)
+                return receivedCategories
             } catch(e) {
                 console.log(e)
             }
@@ -63,6 +64,20 @@ export default {
                 if ( category.exists() ) return category.data()
 
                 return null
+            } catch(e) {
+                console.log(e)
+                return null
+            }
+        },
+        async fetchCategoryByTitle({commit}, title) {
+            try  {
+                const q = query(collection(getFirestore(), "categories"), where("title", "==", title));
+                const querySnapshot = await getDocs(q);
+                let category = null
+                querySnapshot.forEach( item => {
+                    category = {...item.data(), id: item.id}
+                } )
+                return category
             } catch(e) {
                 console.log(e)
                 return null

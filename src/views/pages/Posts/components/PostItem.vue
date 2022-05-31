@@ -40,7 +40,7 @@
         </router-link>
         <div class="flex items-center text-gray-500">
           <template v-if="post.category_id && postCategory">
-            <router-link to="/" class="hover:underline underline-offset-2">{{postCategory}}</router-link>
+            <router-link :to="`/categories/${postCategory}`" class="hover:underline underline-offset-2">{{postCategory}}</router-link>
             <div class="w-1 h-1 mx-2 rounded-full bg-gray-400"/>
           </template>
           <p class="text-sm">{{formatDate(post.timestamp?.seconds) || ''}}</p>

@@ -42,9 +42,9 @@
           </li>
         </ul>
 
-        <button class="block mx-auto text-center py-2 text-sm text-gray-700">
-          See all
-        </button>
+        <router-link to="/categories" class="block mx-auto text-center py-2 text-sm text-gray-700">
+          Add new
+        </router-link>
       </div>
       <p class="text-gray-700 text-sm text-center py-2" v-else>
         No categories to show :(

@@ -113,6 +113,7 @@ export default {
                     receivedUsers.push({ ...doc.data() })
                 });
                 commit('setUsers', receivedUsers)
+                return receivedUsers
             } catch (e) {
                 console.log(e)
             }

@@ -26,8 +26,29 @@ const routes = [
     component: () => import('@views/pages/Categories/index.vue'),
     meta: {
       layout: 'MainLayout'
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@views/pages/Categories/Manage.vue'),
+      },
+      {
+        path: ':id',
+        component: () => import('@views/pages/Categories/SingleCategory.vue'),
+        meta: {
+          sidebar: true
+        }
+      }
+    ]
   },
+  // {
+  //   path: '/categories/:id',
+  //   name: 'Category',
+  //   component: () => import('@views/pages/Categories/SingleCategory.vue'),
+  //   meta: {
+  //     layout: 'MainLayout'
+  //   }
+  // },
   {
     path: "/profile",
     name: "Profile",

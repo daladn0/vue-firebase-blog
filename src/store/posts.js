@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, addDoc, serverTimestamp, getDocs, doc, getDoc, orderBy, query, updateDoc, snapshotEqual } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, getDocs, doc, getDoc, orderBy, query, updateDoc, where } from "firebase/firestore";
 
 export default {
     namespaced: true,
@@ -54,12 +54,26 @@ export default {
                 console.log(e)
             }
         },
-        async fetchSinglePostByID(ctx, id) {
+        async fetchSinglePostByID({ commit }, id) {
             try {
                 const snapshot = await getDoc( doc(getFirestore(), 'posts', id) )
                 if (snapshot.exists()) return snapshot.data()
                 return null
             } catch (e) {
+                console.log(e)
+                return null
+            }
+        },
+        async fetchPostsByCategory({commit}, categoryID) {
+            try {
+                const q = query(collection(getFirestore(), "posts"), where("category_id", "==", categoryID));
+                const querySnapshot = await getDocs(q);
+                let posts = []
+                querySnapshot.forEach( item => {
+                    posts.push(item.data())
+                } )
+                return posts
+            } catch(e){
                 console.log(e)
                 return null
             }
