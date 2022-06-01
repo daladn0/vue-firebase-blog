@@ -16,7 +16,7 @@
         />
       </div>
       <div>
-        <Field :value='postDescription' :rules="descriptionValidation" name="postDescription" v-slot="{field, errors}" >
+        <Field :rules="descriptionValidation" name="postDescription" v-slot="{field, errors}" >
           <label for="email" class="block mb-2 font-medium text-gray-900">Post description</label>
           <textarea
             ref="post-description"
