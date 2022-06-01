@@ -18,7 +18,8 @@ const routes = [
     component: () => import('@/views/pages/Posts/PostCreate.vue'),
     meta: {
       layout: 'MainLayout',
-      action: 'create'
+      action: 'create',
+      loginRequired: true,
     }
   },
   {
@@ -27,7 +28,8 @@ const routes = [
     component: () => import('@/views/pages/Posts/PostCreate.vue'),
     meta: {
       layout: 'MainLayout',
-      action: 'update'
+      action: 'update',
+      loginRequired: true,
     }
   },
   {
@@ -35,7 +37,8 @@ const routes = [
     name: "Categories",
     component: () => import('@views/pages/Categories/index.vue'),
     meta: {
-      layout: 'MainLayout'
+      layout: 'MainLayout',
+      loginRequired: true,
     },
     children: [
       {
@@ -55,20 +58,13 @@ const routes = [
       }
     ]
   },
-  // {
-  //   path: '/categories/:id',
-  //   name: 'Category',
-  //   component: () => import('@views/pages/Categories/SingleCategory.vue'),
-  //   meta: {
-  //     layout: 'MainLayout'
-  //   }
-  // },
   {
     path: "/profile",
     name: "Profile",
     component: () => import('@views/pages/Profile/index.vue'),
     meta: {
       layout: 'MainLayout',
+      loginRequired: true,
     }
   },
   {
@@ -102,8 +98,17 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((from, to, next) => {
+router.beforeEach((to, from, next) => {
   store.commit('auth/setError',null)
+
+  const isLoggedIn = store.state.auth.isLoggedIn
+
+  if ( to.meta.loginRequired && !isLoggedIn ) {
+    next('/login')
+    store.dispatch('toast/SHOW_ERROR', 'You have to log in to see all pages!')
+    return
+  }
+
   next()
 })
 
