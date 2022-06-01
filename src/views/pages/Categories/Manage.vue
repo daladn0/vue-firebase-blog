@@ -1,4 +1,23 @@
 <template>
+  <Modal v-if="showModal">
+    <div class="p-4">
+      <p class="text-2xl mb-8">Do you really want to remove <span class='font-semibold' >{{selectedCategoryTitle}}</span> category?</p>
+      <div class="flex justify-center items-center space-x-4">
+        <MainButton type='button' class="flex items-center" @click="deleteSelectedCategory(); showModal = false">
+          Remove
+          <svg class="w-5 h-5 text-white ml-2">
+            <use xlink:href='/sprite.svg#tick' />
+          </svg>
+        </MainButton>
+        <MainButton type='button' class="bg-red-500 hover:bg-red-600 flex items-center focus:ring-0" @click="showModal = false">
+          Cancel
+          <svg class="w-5 h-5 text-white ml-2">
+            <use xlink:href='/sprite.svg#close' />
+          </svg>
+        </MainButton>
+      </div>
+    </div>
+  </Modal>
   <Spinner v-if="isLoading" class="mx-auto mt-5" />
   <div v-else>
     <!-- Add category -->
@@ -120,9 +139,9 @@
       <div class="flex items-center">
         <MainButton class="mt-8" type="submit">Update category</MainButton>
         <MainButton
-          class="mt-8 bg-red-500 hover:bg-red-600 ml-4"
+          class="mt-8 bg-red-500 hover:bg-red-600 ml-4 focus:ring-0"
           type="button"
-          @click="deleteSelectedCategory"
+          @click="showModal = true"
           >Remove category</MainButton
         >
       </div>
@@ -133,14 +152,18 @@
 import { mapActions } from "vuex";
 import { Field, Form } from "vee-validate";
 import { string, required } from "yup";
+import Modal from '@views/components/common/Modal.vue'
 export default {
   name: "ManageCategories",
   components: {
     Form,
     Field,
+    Modal,
   },
   data() {
     return {
+      showModal: false,
+
       categories: [],
       isLoading: false,
       isImageLoading: false,
