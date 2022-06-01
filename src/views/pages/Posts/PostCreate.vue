@@ -173,8 +173,8 @@ export default {
       const {title, description, photoURL, category_id} = post
 
       if ( category_id ) {
-        const {id} = await this.fetchCategoryByID(category_id)
-        this.selectedCategory = id
+        const category = await this.fetchCategoryByID(category_id)
+        if ( category ) this.selectedCategory = category.id
       }
 
       if ( photoURL ) {

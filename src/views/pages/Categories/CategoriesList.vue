@@ -9,7 +9,7 @@
         <router-link :to="`/categories/${category.title}`" class="block w-full h-16 relative cursor-pointer">
           <div class="absolute top-0 left-0 w-full h-full object-cover bg-black bg-opacity-50" />
           <img class='w-full h-full object-cover' :src="category.photoURL" alt="">
-          <p class="absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white text-lg font-semibold" >{{category.title}}</p>
+          <p class="absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white text-lg font-semibold truncate px-4 max-w-full block" >{{category.title}}</p>
         </router-link>
         <div>
           <p v-if="isCategoryEmpty(category, posts)" class='leading-[225px] text-center text-gray-700 text-sm'>No posts in this category :(</p>

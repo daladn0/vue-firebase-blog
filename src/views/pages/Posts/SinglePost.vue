@@ -1,4 +1,34 @@
 <template>
+  <Modal v-if="showModal">
+    <div class="p-4">
+      <p class="text-2xl mb-8">Do you really want to remove this post?</p>
+      <div class="flex justify-center items-center space-x-4">
+        <MainButton
+          type="button"
+          class="flex items-center"
+          @click="
+            deletePost();
+            showModal = false;
+          "
+        >
+          Remove
+          <svg class="w-5 h-5 text-white ml-2">
+            <use xlink:href="/sprite.svg#tick" />
+          </svg>
+        </MainButton>
+        <MainButton
+          type="button"
+          class="bg-red-500 hover:bg-red-600 flex items-center focus:ring-0"
+          @click="showModal = false"
+        >
+          Cancel
+          <svg class="w-5 h-5 text-white ml-2">
+            <use xlink:href="/sprite.svg#close" />
+          </svg>
+        </MainButton>
+      </div>
+    </div>
+  </Modal>
   <Spinner v-if="isLoading" class="mx-auto mt-5" />
   <div v-else-if="!post">Such a post doesn't exist</div>
   <div v-else>
@@ -42,9 +72,9 @@
           <svg class="w-5 h-5 text-gray-700">
             <use xlink:href="/sprite.svg#dots" />
           </svg>
-          
+
           <PostDropdown
-            @remove="deletePost"
+            @remove="showModal = true"
             @update="$router.push(`/update-post/${post.id}`)"
             v-click-outside="() => (showDropDown = false)"
             trigger="openDropdown"
@@ -60,7 +90,9 @@
         :src="post.photoURL"
         alt=""
       />
-      <h3 v-if="post.title" class="text-2xl font-semibold break-word">{{ post.title }}</h3>
+      <h3 v-if="post.title" class="text-2xl font-semibold break-word">
+        {{ post.title }}
+      </h3>
       <p class="text-gray-800 leading-loose break-word">{{ post.description }}</p>
     </div>
   </div>
@@ -69,13 +101,16 @@
 import { mapActions, mapGetters } from "vuex";
 import { formatDate } from "@/helpers";
 import PostDropdown from "@views/pages/Posts/components/PostDropdown.vue";
+import Modal from '@views/components/common/Modal.vue'
 export default {
   name: "SinglePost",
   components: {
     PostDropdown,
+    Modal
   },
   data() {
     return {
+      showModal: false,
       isLoading: false,
       post: null,
       postAuthor: null,
@@ -92,11 +127,11 @@ export default {
     ...mapActions("categories", ["fetchCategoryByID"]),
     ...mapActions("toast", ["SHOW_SUCCESS"]),
     async deletePost() {
-      this.isLoading = true
-      await this.removePost(this.post.id)
-      this.SHOW_SUCCESS('The post has been removed!')
-      this.$router.push('/')
-      this.isLoading = false
+      this.isLoading = true;
+      await this.removePost(this.post.id);
+      this.SHOW_SUCCESS("The post has been removed!");
+      this.$router.push("/");
+      this.isLoading = false;
     },
     formatDate,
   },
