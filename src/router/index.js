@@ -101,13 +101,13 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   store.commit('auth/setError',null)
 
-  const isLoggedIn = store.state.auth.isLoggedIn
+  // const isLoggedIn = store.state.auth.isLoggedIn
 
-  if ( to.meta.loginRequired && !isLoggedIn ) {
-    next('/login')
-    store.dispatch('toast/SHOW_ERROR', 'You have to log in to see all pages!')
-    return
-  }
+  // if ( to.meta.loginRequired && !isLoggedIn ) {
+  //   next('/login')
+  //   store.dispatch('toast/SHOW_ERROR', 'You have to log in to see all pages!')
+  //   return
+  // }
 
   next()
 })

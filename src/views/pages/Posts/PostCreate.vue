@@ -6,6 +6,7 @@
       @submit="action === 'update' ? editPost() : createNewPost()"
       @invalid-submit="$refs['post-description'].focus()"
       class="space-y-8"
+      :initial-values='initialValues'
     >
       <div>
         <label for="email" class="block mb-2 font-medium text-gray-900">Post title</label>
@@ -21,8 +22,6 @@
           <textarea
             ref="post-description"
             v-bind="field"
-            :value='postDescription'
-            @input='postDescription = $event.target.value'
             class="w-full py-2 transition-all px-2 outline-none border border-gray-300 hover:border-gray-400 focus:border-gray-500 rounded-lg resize-none"
             placeholder="Post Description"
           />
@@ -31,7 +30,7 @@
       </div>
 
       <div>
-        <label for="email" class="block mb-2 font-medium text-gray-900">Post category</label>
+        <label for="email" class="block mb-2 font-medium text-gray-900" @click='ss'>Post category</label>
         <Selection 
           v-model="selectedCategory"
           disabledOption="Choose category"
@@ -96,6 +95,7 @@ export default {
       imageURL: '',
       showImage: false,
       descriptionValidation: string().required("Post description can't be empty!"),
+      initialValues: {}
     }
   },
   methods: {
@@ -184,6 +184,7 @@ export default {
       
       this.postTitle = title
       this.postDescription = description
+      this.initialValues.postDescription = description
       this.imageURL = photoURL
     }
 

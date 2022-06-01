@@ -2,15 +2,16 @@
 // [] implement helper for invalid fields & use them on every page where needed
 // [] fix loading spinner on sign up page ( looks like there are two spinners ) 
 // [] fix sign up page redirect ( there is a noticable gap between loading ending and redirecting to home page )
-// [] helper methods for date formating
-// [] post page doesn't show
+// [x] helper methods for date formating
+// [x] post page doesn't show
 // [] focus first field on login/signup pagese when rendered
 // [] add 'scroll to top' button
 // [] textarea auto resize
-// [] routes protection
+// [x] routes protection
 // [] protect route leaving while updating post
-// [] prompt modal window for removing post
+// [x] prompt modal window for removing post
 // [] add search for posts/categories etc
+// [] set initial values
 
 import { createApp } from 'vue'
 import router from '@/router'
