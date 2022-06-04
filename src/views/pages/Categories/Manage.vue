@@ -1,18 +1,32 @@
 <template>
   <Modal v-if="showModal">
     <div class="p-4">
-      <p class="text-2xl mb-8">Do you really want to remove <span class='font-semibold' >{{selectedCategoryTitle}}</span> category?</p>
+      <p class="text-2xl mb-8">
+        Do you really want to remove
+        <span class="font-semibold">{{ selectedCategoryTitle }}</span> category?
+      </p>
       <div class="flex justify-center items-center space-x-4">
-        <MainButton type='button' class="flex items-center" @click="deleteSelectedCategory(); showModal = false">
+        <MainButton
+          type="button"
+          class="flex items-center"
+          @click="
+            deleteSelectedCategory();
+            showModal = false;
+          "
+        >
           Remove
           <svg class="w-5 h-5 text-white ml-2">
-            <use xlink:href='/sprite.svg#tick' />
+            <use xlink:href="/sprite.svg#tick" />
           </svg>
         </MainButton>
-        <MainButton type='button' class="bg-red-500 hover:bg-red-600 flex items-center focus:ring-0" @click="showModal = false">
+        <MainButton
+          type="button"
+          class="bg-red-500 hover:bg-red-600 flex items-center focus:ring-0"
+          @click="showModal = false"
+        >
           Cancel
           <svg class="w-5 h-5 text-white ml-2">
-            <use xlink:href='/sprite.svg#close' />
+            <use xlink:href="/sprite.svg#close" />
           </svg>
         </MainButton>
       </div>
@@ -146,26 +160,37 @@
         >
       </div>
     </form>
+
+    <CategoriesTable
+      v-if="selectedCategory && selectedCategory !== 'disabled-option' && !postsLoading"
+      :posts="posts"
+      :currentCategory='currentCategory'
+      class='mt-8'
+    />
   </div>
 </template>
 <script>
 import { mapActions } from "vuex";
 import { Field, Form } from "vee-validate";
 import { string, required } from "yup";
-import Modal from '@views/components/common/Modal.vue'
+import Modal from "@views/components/common/Modal.vue";
+import CategoriesTable from "@views/pages/Categories/CategoriesTable.vue";
 export default {
   name: "ManageCategories",
   components: {
     Form,
     Field,
     Modal,
+    CategoriesTable,
   },
   data() {
     return {
       showModal: false,
 
       categories: [],
+      posts: [],
       isLoading: false,
+      postsLoading: false,
       isImageLoading: false,
 
       selectedCategory: "disabled-option",
@@ -192,6 +217,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("posts", ["fetchPostsByCategory"]),
     ...mapActions("toast", ["SHOW_ERROR", "CLEAR_TOASTS", "SHOW_SUCCESS"]),
     ...mapActions("categories", [
       "createCategory",
@@ -270,7 +296,7 @@ export default {
       this.selectedCategoryImage = this.selectedCategoryImageURL;
     },
     checkSelectedImageValidation() {
-      if ( !this.selectedCategory || this.selectedCategory === 'disabled-option' ) return
+      if (!this.selectedCategory || this.selectedCategory === "disabled-option") return;
       const { photoURL } = this.categories.find((c) => c.id === this.selectedCategory);
       this.selectedCategoryImage = photoURL;
       this.selectedCategoryImageURL = photoURL;
@@ -291,7 +317,7 @@ export default {
         photoURL: this.selectedCategoryImage,
       });
 
-      this.categories = await this.fetchCategories()
+      this.categories = await this.fetchCategories();
 
       this.SHOW_SUCCESS("Category is updated");
 
@@ -300,6 +326,22 @@ export default {
     changeSelectedImage() {
       this.selectedCategoryImage = this.selectedCategoryImageURL;
       this.isSelectedImageLoading = false;
+    },
+  },
+  computed: {
+    currentCategory() {
+      const category = this.categories.find((c) => c.id === this.selectedCategory);
+      if (!category) return null;
+      return category;
+    },
+  },
+  watch: {
+    async selectedCategory(value) {
+      if (value !== "disabled-option") {
+        this.postsLoading = true;
+        this.posts = await this.fetchPostsByCategory(this.selectedCategory);
+        this.postsLoading = false;
+      }
     },
   },
   async created() {

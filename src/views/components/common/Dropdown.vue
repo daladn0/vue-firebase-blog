@@ -24,15 +24,21 @@
       v-for="link in links" 
       :key="link.path" 
       :to="link.path" @click="$emit('close')" 
-      class="block w-full text-left transition-all hover:bg-gray-100 p-2"
+      class="flex items-center w-full text-left transition-all hover:bg-gray-100 px-2 py-2.5"
     >
+      <svg class='w-5 mr-2' viewBox='0 0 24 24'>
+        <use :xlink:href="`/sprite.svg/#${link.icon}`" />
+      </svg>
       {{link.title}}
     </router-link>
 
     <div class="w-full h-px bg-gray-200" />
 
-    <button @click="signOut" type="button" class="w-full text-left transition-all hover:bg-gray-100 p-2">
+    <button @click="signOut" type="button" class="flex justify-center items-center w-full text-left transition-all hover:bg-gray-100 px-2 py-2.5">
       Sign out
+      <svg class="w-5 ml-2" viewBox='0 0 24 24'>
+        <use xlink:href='/sprite.svg#logout' />
+      </svg>
     </button>
   </div>
 </template>
@@ -54,10 +60,11 @@ export default {
   data() {
     return {
       links: [
-        { path: '/', title: 'Home' },
-        { path: '/profile', title: 'Profile' },
-        { path: '/categories', title: 'Categories' },
-        { path: '/create-post', title: 'Create Post' },
+        { path: '/', title: 'Home', icon: 'home' },
+        { path: '/profile', title: 'Profile', icon: 'user' },
+        { path: '/saved', title: 'Saved', icon: 'saved' },
+        { path: '/categories', title: 'Categories', icon: 'categories' },
+        { path: '/create-post', title: 'Create Post', icon: 'post' },
       ]
     }
   }

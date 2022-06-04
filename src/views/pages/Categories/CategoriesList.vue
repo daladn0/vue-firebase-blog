@@ -1,6 +1,6 @@
 <template>
     <Spinner v-if='isLoading' class="mx-auto mt-5" />
-    <div v-else class="grid grid-cols-3 gap-6">
+    <div v-else class="grid grid-cols-3 gap-6 auto-rows-[289px]">
       <div 
         v-for="category in categories" 
         :key="category.id"
@@ -20,7 +20,7 @@
               class="flex items-center justify-between w-full p-2 border-b hover:bg-gray-100"
             >
               <router-link :to='`/post/${post.id}`' class="block truncate pr-2">
-                {{post.title}}
+                {{post.title ? post.title : post.description}}
               </router-link>
               <router-link 
                 :to="`/post/${post.id}`"

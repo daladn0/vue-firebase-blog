@@ -22,6 +22,7 @@
           <textarea
             ref="post-description"
             v-bind="field"
+            v-model="postDescription"
             class="w-full py-2 transition-all px-2 outline-none border border-gray-300 hover:border-gray-400 focus:border-gray-500 rounded-lg resize-none"
             placeholder="Post Description"
           />
@@ -129,14 +130,16 @@ export default {
     },
     async editPost() {
       this.isLoading = true
+      const updateCategory = this.selectedCategory === 'disabled-option' ? '' : this.selectedCategory
+
       await this.updatePost({
         id: this.$route.params.id,
         title: this.postTitle,
         description: this.postDescription,
-        category_id: this.selectedCategory,
+        category_id: updateCategory,
         photoURL: this.postImage
       })
-      this.SHOW_SUCCESS('Pos has been updated')
+      this.SHOW_SUCCESS('Post has been updated')
       this.$router.push('/')
       this.isLoading = false
     },
@@ -187,6 +190,13 @@ export default {
       this.initialValues.postDescription = description
       this.imageURL = photoURL
     }
+
+    await await this.createPost({
+      title: 'asdasd',
+      description: 'asdasd',
+      photoURL: '',
+      category_id: 'Yrbs9aI0zj06Awzm5r5p'
+    })
 
     this.isLoading = false    
   }
