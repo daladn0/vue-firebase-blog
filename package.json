@@ -21,6 +21,7 @@
   "homepage": "https://github.com/daladn0/vue-firebase-blog#readme",
   "dependencies": {
     "core-js": "^3.22.5",
+    "express": "^4.18.1",
     "firebase": "^9.8.1",
     "svgo-loader": "^3.0.0",
     "vee-validate": "^4.5.11",
